@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POE-DIS-014 · Conflictos en Punto de Entrega</title>
+<link rel="icon" href="data:image/png;base64,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">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --bg:#f3f4f6; --card:#fff; --ink:#1f2328; --mute:#667085; --line:#e3e6eb;
+  --navy:#2b2f36; --navy2:#3a3f48; --acc:#f07f1d; --grey:#8c8f94;
+  --prom:#1e9e5a; --neu:#9aa3b2; --det:#d64545;
+  --s-rojo:#d64545; --s-naranja:#ef8a17; --s-amarillo:#e9c21b; --s-verde:#1e9e5a; --s-gris:#c3c9d3;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+.brand{background:linear-gradient(90deg,#0d0f12 0%,#1a1d22 100%);display:flex;align-items:center;gap:16px;padding:12px 22px;flex-wrap:wrap}
+.brand img{height:46px;filter:drop-shadow(0 0 1px rgba(255,255,255,.25))}
+.brand .ttl{display:flex;flex-direction:column;line-height:1.15}
+.brand .ttl b{color:#fff;font-size:20px;letter-spacing:2px;font-weight:800}
+.brand .ttl span{color:var(--acc);font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-top:3px}
+.brand .hright{margin-left:auto;display:flex;gap:8px;align-items:center;font-size:12px;flex-wrap:wrap}
+.chip{background:#2a2e35;color:#d5d8de;padding:5px 10px;border-radius:20px;white-space:nowrap;border:1px solid #363b44}
+.chip.click{cursor:pointer}.chip.click:hover{background:#353a42}
+nav{border-top:1px solid #2c3037;border-bottom:3px solid var(--acc)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+nav{background:#1a1d22;display:flex;gap:6px;padding:6px 20px;flex-wrap:wrap;position:sticky;top:0;z-index:20;align-items:center}
+nav button{background:transparent;color:#d5d8de;border:0;padding:7px 13px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px}
+nav button:hover{background:var(--navy2)}
+nav button.on{background:var(--navy2);color:#fff;box-shadow:inset 0 -3px 0 var(--acc)}
+nav .grp{display:flex;align-items:center;gap:2px;border:1px solid #4a505a;border-radius:8px;padding:2px 4px 2px 10px}
+nav .grp>span{color:var(--acc);font-weight:800;font-size:12px;margin-right:4px;letter-spacing:.5px}
+main{padding:18px 20px;max-width:1750px;margin:0 auto}
+.tab{display:none}.tab.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+.card h2{font-size:16px;margin:0 0 10px}
+.card h3{font-size:14px;margin:14px 0 6px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px}
+.muted{color:var(--mute)}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:6px;padding:8px 14px;font-weight:600;cursor:pointer;font-size:13px;text-decoration:none;display:inline-block}
+.btn.sec{background:#e8ebf0;color:var(--ink)}
+.btn.acc{background:var(--acc);color:#fff}
+input,select,textarea{font:inherit;font-size:13px;border:1px solid #cfd4dc;border-radius:6px;padding:6px 8px;background:#fff;color:var(--ink)}
+textarea{resize:vertical}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.3px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.filters select,.filters input[type=search]{min-width:140px;max-width:240px}
+.kpis{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.kpi .v{font-size:22px;font-weight:700}
+.kpi .l{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.3px}
+.kpi.click{cursor:pointer}.kpi.click:hover{border-color:var(--acc)}
+.kpi.sel{outline:2px solid var(--acc)}
+.tblwrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff;max-height:calc(100vh - 300px)}
+.tblwrap.free{max-height:none}
+table{border-collapse:collapse;width:100%}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#eef0f3;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:#3d4450;position:sticky;top:0;z-index:2;white-space:nowrap}
+.rev td{font-size:12.5px}
+.rev textarea{width:100%;min-width:170px;min-height:46px;font-size:12px}
+.rev select,.rev input[type=date]{font-size:12px;width:100%;min-width:110px}
+.sem{width:6px;padding:0!important}
+.sem-rojo{background:var(--s-rojo)}.sem-naranja{background:var(--s-naranja)}.sem-amarillo{background:var(--s-amarillo)}.sem-verde{background:var(--s-verde)}.sem-gris{background:var(--s-gris)}
+tr.r-rojo{background:#fdf2f2}
+.cat{display:inline-block;padding:2px 8px;border-radius:12px;font-weight:700;font-size:11px;color:#fff}
+.cat-D{background:var(--det)}.cat-N{background:var(--neu)}.cat-P{background:var(--prom)}
+.score{font-weight:700;font-size:15px}
+.stars{color:#f5a623;letter-spacing:1px;font-size:12px}
+.drv{display:block;font-size:11.5px;margin-bottom:3px;line-height:1.3}
+.drv b{font-weight:600}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:4px;margin:2px 3px 0 0}
+.b-rep{background:#ede4ff;color:#5a2db3}
+.b-anu{background:#222;color:#fff}
+.b-venc{background:#fde7cf;color:#a14f00}
+.hist{margin-top:3px;font-size:11px;line-height:1.5;background:#f6f2ff;border-radius:5px;padding:3px 6px}
+.hist .c{font-weight:700;text-decoration:underline}
+.hD{color:var(--det);font-weight:700}.hN{color:#6b7380;font-weight:700}.hP{color:var(--prom);font-weight:700}
+.cm{font-style:italic;color:#3d4450;font-size:12px;max-width:260px}
+.who{font-size:10.5px;color:var(--mute)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.legend span{display:flex;align-items:center;gap:6px}
+.sq{width:14px;height:14px;border-radius:3px;display:inline-block}
+.bar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:#eef0f3;min-width:160px}
+.bar div{height:100%}
+.hbar{height:12px;background:var(--det);border-radius:3px}
+.pill-ok{background:#dff3e8;color:#11663a;font-weight:700;border-radius:5px;padding:2px 7px}
+.pill-bad{background:#fbe1e1;color:#9b1c1c;font-weight:700;border-radius:5px;padding:2px 7px}
+.pill-mid{background:#fff3d0;color:#7a5a00;font-weight:700;border-radius:5px;padding:2px 7px}
+.pill-off{background:#eef0f3;color:#667085;border-radius:5px;padding:2px 7px}
+.info p,.info li{line-height:1.55}
+.formula{background:#f6f7f9;border-left:4px solid var(--acc);padding:10px 14px;border-radius:6px;font-weight:600}
+.steps{white-space:pre-wrap;background:#f6f7f9;border-radius:8px;padding:12px 14px;line-height:1.55}
+.overlay{position:fixed;inset:0;background:rgba(30,33,38,.55);display:flex;align-items:center;justify-content:center;z-index:50}
+.modal{background:#fff;border-radius:12px;padding:22px;width:min(420px,92vw)}
+.modal h2{margin:0 0 12px;font-size:17px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.warn{background:#fff6e0;border:1px solid #f3d98b;border-radius:8px;padding:10px 12px;font-size:13px}
+.okbox{background:#e6f6ec;border:1px solid #a9dcbc;border-radius:8px;padding:10px 12px;font-size:13px}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;opacity:0;transition:.3s;z-index:60;pointer-events:none}
+.toast.on{opacity:1}
+.nowrap{white-space:nowrap}
+.r{text-align:right}
+td.prev{color:#a0a7b4}
+.more{text-align:center;padding:12px}
+.sect{font-size:12px;font-weight:800;color:var(--acc);letter-spacing:.6px;margin:4px 0 10px;text-transform:uppercase}
+@media (max-width:700px){main{padding:12px}.grid2{grid-template-columns:1fr}.brand .ttl b{font-size:16px}}
+.modal.acta{width:min(920px,96vw);max-height:92vh;overflow:auto}
+.acta h3{border-bottom:2px solid var(--acc);padding-bottom:3px;margin-top:18px}
+.acta label.f{margin-top:8px}
+.acta textarea{width:100%}
+.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+table.kv td{font-size:12.5px}
+table.kv td:nth-child(odd){color:var(--mute);font-weight:600;width:110px;white-space:nowrap}
+table.firmas{margin-top:26px}table.firmas td{width:50%;border:1px solid var(--line);height:70px;vertical-align:bottom;font-size:11px;color:var(--mute)}
+.firmas{display:none}
+@media print{
+  body>*:not(#modalHost){display:none!important}
+  .overlay{position:static;background:none;display:block}
+  .modal.acta{width:100%;max-height:none;overflow:visible;padding:0}
+  .noprint{display:none!important}
+  .firmas{display:table}
+  textarea,select,input{border:1px solid #ccc}
+}
+</style>
+</head>
+<body>
+<div class="brand">
+  <img src="data:image/png;base64,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" alt="">
+  <div class="ttl"><b>LOGÍSTICA TOTAL SRL</b><span>Conflictos en Punto de Entrega · POE-DIS-014</span></div>
+  <div class="hright">
+    <span class="chip" id="baseInfo"></span>
+    <span class="chip click" id="btnRefresh" title="Volver a leer las respuestas y el seguimiento">⟳ Actualizar</span>
+    <span class="chip" id="conn"><span class="dot" style="background:#999"></span>conectando…</span>
+    <span class="chip click" id="userChip" title="Cambiar usuario">👤 —</span>
+  </div>
+</div>
+<nav id="nav">
+  <button data-t="info">INFO</button>
+  <div class="grp"><span>CONFLICTOS</span><button data-t="rev">Revisión</button><button data-t="res">Resumen</button></div>
+  <button data-t="adm">ANALISTA 🔒</button>
+</nav>
+<div id="banner" style="display:none;background:#fde2e2;color:#8a1c1c;padding:10px 20px;font-weight:600"></div>
+
+<main>
+<!-- ================= INFO ================= -->
+<section class="tab info" id="t-info">
+  <div class="grid2">
+    <div class="card">
+      <div class="sect">POE-DIS-014</div>
+      <h2>¿Qué es este reporte?</h2>
+      <p>Es el seguimiento de los <b>reportes de conflicto en punto de entrega</b> que cargan choferes y ayudantes desde el formulario. Cada respuesta del formulario aparece sola en <b>Revisión</b> y el supervisor registra ahí todo el tratamiento según el procedimiento <b>POE-DIS-014 · Gestión y Mediación de Conflictos en Punto de Entrega</b>.</p>
+      <ul>
+        <li><b>Conflicto por malos tratos:</b> faltas de respeto, insultos, gritos, amenazas, trato discriminatorio o presión indebida del cliente (o su personal) hacia el chofer o ayudante.</li>
+        <li><b>Conflicto por condiciones de entrega:</b> exigencias que vulneran las normas de seguridad de descarga (acarreos excesivos sin medios mecánicos, escaleras peligrosas, sótanos sin luz, zona de descarga obstruida, demoras injustificadas).</li>
+      </ul>
+      <div class="formula">Cada reporte es obligatorio: todos deben tener plan completo y cerrarse.</div>
+      <p class="row" style="margin-top:12px">
+        <a id="lnkPoe" class="btn acc" target="_blank" rel="noopener" href="#">📄 Ver procedimiento POE-DIS-014</a>
+        <a id="lnkForm" class="btn sec" target="_blank" rel="noopener" href="#" style="display:none">📝 Formulario de reporte</a>
+      </p>
+    </div>
+    <div class="card">
+      <div class="sect">Procedimiento</div>
+      <h2>Etapas que se registran en el seguimiento</h2>
+      <ol class="info">
+        <li><b>Bloqueo preventivo.</b> Desde que entra el reclamo se suspende la atención y entrega al cliente hasta completar la mediación.</li>
+        <li><b>Testimonios internos.</b> Entrevista individual al colaborador implicado y a los testigos (compañero de ruta y otros que hayan atendido al cliente).</li>
+        <li><b>Visita al cliente (24 a 48 h hábiles).</b> Supervisor + Seguridad escuchan el descargo del cliente e inspeccionan el punto de descarga.</li>
+        <li><b>Mediación y acuerdo.</b> Pautas de trato y condiciones de entrega (lugar de descarga, horarios, envases, responsable en el local).</li>
+        <li><b>Rehabilitación y monitoreo.</b> Se rehabilita al cliente, se informa al equipo en la matinal y se controlan las <b>2 entregas siguientes</b>. Si reincide, se eleva a Gerencia.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>Escala de colores (Revisión)</h2>
+      <table>
+        <tr><td class="sem sem-rojo"></td><td><b>Rojo – Falta completar.</b> El reporte no tiene plan completo. <b>Obligatorio.</b></td></tr>
+        <tr><td class="sem sem-naranja"></td><td><b>Naranja – Vencido.</b> Pasó la fecha compromiso, o pasaron más de <b class="slaTxt">2</b> días hábiles sin registrar la visita al cliente.</td></tr>
+        <tr><td class="sem sem-amarillo"></td><td><b>Amarillo – En curso.</b> Plan completo en Pendiente / En gestión, dentro de fecha.</td></tr>
+        <tr><td class="sem sem-verde"></td><td><b>Verde – Cerrado.</b> Status Resuelto, Sin solución o Elevado a Gerencia.</td></tr>
+      </table>
+      <p class="muted" style="margin-top:10px">Un plan está <b>completo</b> con: Plan de acción, Sector, Responsable, Status y Fecha compromiso (la fecha no hace falta si el caso está cerrado).</p>
+    </div>
+    <div class="card">
+      <h2>Cómo se trabaja</h2>
+      <ol>
+        <li>Entrá a <b>Revisión</b>. Prioridad: filas en <b style="color:var(--s-rojo)">rojo</b> y <b style="color:var(--s-naranja)">naranja</b>.</li>
+        <li>Marcá el <b>Bloqueo</b> del cliente y la <b>Etapa</b> en la que está el caso.</li>
+        <li>Cargá Comentario, Plan de acción, Sector, Responsable, Fecha compromiso y Status. Se guarda solo al salir de cada campo.</li>
+        <li>Con el botón <b>📝 Acta</b> completás la declaración de testigos, la visita, el relato del cliente, el acuerdo de mediación y el monitoreo de las 2 entregas. Se puede imprimir.</li>
+        <li>Si el cliente figura <span class="badge b-rep">REPITE</span>, abajo de su nombre ves todos sus reportes (el actual subrayado).</li>
+        <li>Al cerrar, pasá el status a <b>Resuelto</b> (rehabilitado con acuerdo), <b>Sin solución</b> o <b>Elevado a Gerencia</b>.</li>
+      </ol>
+      <div class="formula" id="infoObj"></div>
+      <p class="muted" id="infoMeta"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REVISIÓN ================= -->
+<section class="tab" id="t-rev">
+  <div class="kpis" id="rev-kpis"></div>
+  <div class="card" style="padding:12px 14px"><div class="filters" id="rev-filters"></div></div>
+  <div class="tblwrap"><table class="rev" id="rev-tbl"><thead></thead><tbody></tbody></table><div class="more" id="rev-more"></div></div>
+  <p class="muted" id="rev-count"></p>
+</section>
+
+<!-- ================= RESUMEN ================= -->
+<section class="tab" id="t-res">
+  <div class="card" style="padding:12px 14px"><div class="filters">
+    <label class="f">Período<select id="rs-per"></select></label>
+    <label class="f">Motivo<select id="rs-mot"></select></label>
+    <button class="btn acc" style="margin-left:auto" onclick="exportRes()">⬇ Excel del resumen</button>
+  </div></div>
+  <div class="kpis" id="rs-kpis"></div>
+  <div class="card">
+    <h2>Reportes por mes</h2>
+    <div class="legend" style="margin-bottom:8px"><span><i class="sq" style="background:var(--s-rojo)"></i>Falta completar</span><span><i class="sq" style="background:var(--s-naranja)"></i>Vencidos</span><span><i class="sq" style="background:var(--s-amarillo)"></i>En curso</span><span><i class="sq" style="background:var(--s-verde)"></i>Cerrados</span></div>
+    <div class="tblwrap free"><table id="rs-mes"></table></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h2>Motivos de reporte</h2><div id="rs-mot-t"></div></div>
+    <div class="card"><h2>Etapa del procedimiento</h2><p class="muted" style="margin-top:-4px">Casos abiertos según la etapa cargada</p><div id="rs-etapa"></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h2>Estado de los planes de acción</h2><div id="rs-planes"></div></div>
+    <div class="card"><h2>¿Sirvieron las mediaciones?</h2><div id="rs-efecto"></div><h3 style="margin-top:18px">Cumplimiento del procedimiento</h3><div id="rs-proc"></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h2>Clientes con más reportes</h2><div id="rs-cli"></div></div>
+    <div class="card"><h2>Colaboradores que reportaron</h2><div id="rs-col"></div></div>
+  </div>
+</section>
+
+<!-- ================= ANALISTA ================= -->
+<section class="tab" id="t-adm">
+  <div id="admLock" class="card" style="max-width:380px">
+    <h2>🔒 Acceso analista</h2>
+    <div class="row"><input type="password" id="admPass" placeholder="Contraseña"><button class="btn" id="admGo">Entrar</button></div>
+    <p style="color:var(--det);display:none" id="admErr">Contraseña incorrecta</p>
+  </div>
+  <div id="admBody" style="display:none">
+    <div class="card"><h2>% de reportes con plan completo</h2><p class="muted" style="margin-top:-4px">Objetivo 100% desde <b class="iniTxt"></b>. Meses previos como referencia.</p><div class="tblwrap free"><table id="comp"></table></div></div>
+    <div class="grid2">
+      <div class="card">
+        <h2>1 · Fuentes de datos</h2>
+        <div id="admSrc" style="line-height:1.7"></div>
+        <h3>Conexión de la planilla de seguimiento (una sola vez)</h3>
+        <ol class="muted" style="line-height:1.55;font-size:13px">
+          <li>Abrir la planilla de <b>Seguimiento</b> → <b>Extensiones → Apps Script</b>.</li>
+          <li>Pegar el contenido de <code>Codigo.gs</code> y guardar.</li>
+          <li>Ejecutar la función <code>probar</code> y aceptar los permisos.</li>
+          <li><b>Implementar → Nueva implementación → Aplicación web</b>. Ejecutar como: <i>Yo</i>. Acceso: <i>Cualquier persona</i>.</li>
+          <li>Copiar la URL que termina en <code>/exec</code> y pegarla en <code>index.html</code> en <code>APPS_SCRIPT_URL</code>.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>2 · Configuración general</h2>
+        <div style="display:grid;gap:10px">
+          <label class="f">Inicio del seguimiento (mes desde el que se exige 100%)<input type="month" id="cfgIni" style="max-width:180px"></label>
+          <label class="f">Días hábiles para la visita al cliente (POE: 24 a 48 h)<input type="number" id="cfgSla" min="1" max="10" style="max-width:120px"></label>
+          <label class="f">Link al formulario (para choferes)<input type="url" id="cfgForm" placeholder="https://forms.gle/…"></label>
+          <div><button class="btn" id="cfgSave">Guardar configuración</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>3 · Responsables</h2>
+        <p class="muted" style="margin-top:-4px">Opciones del desplegable “Responsable” según el sector elegido.</p>
+        <table id="tblResp"></table>
+        <div class="row" style="margin-top:10px">
+          <input id="newRespName" placeholder="Nombre y apellido">
+          <select id="newRespSec"></select>
+          <button class="btn" id="addResp">Agregar</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>4 · Exportar</h2>
+        <p><button class="btn acc" id="btnExport">⬇ Descargar Excel con reportes + seguimiento</button></p>
+        <div id="admMeta" class="muted"></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+<div id="modalHost"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN
+   APPS_SCRIPT_URL: URL /exec del Apps Script de la planilla de SEGUIMIENTO.
+   Mientras quede vacía, las respuestas se leen igual (planilla pública) pero
+   los comentarios quedan en MODO LOCAL (solo en este navegador).
+   ===================================================================== */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhsBBK--p5usZ3xJNmjIiCQy6IdPlCygUheEkfEuWNzvjSXXS1jlAQdxc1QpMTMgGV/exec';
+const RESP_ID  = '1SC9NwwRCbEEcHSyevz8eLY92Iqmq8HyRPqGYXzABOjY';
+const RESP_GID = 321852746;
+const SEG_ID   = '1Fx-Dy5xC7iFH0_zYKEDi4SP75jlZf-QY2dm77YbGawY';
+const POE_URL  = 'https://docs.google.com/document/d/1ydmh9m_rXVY2CzC7KPglt-Ut8k356GzoNx12zHPKYiQ/edit';
+const ADMIN_PASS = '2026';
+const REFRESH_MS = 60000;
+const LIMIT = 200;
+
+const STATUS   = ['Pendiente','En gestión','Resuelto','Sin solución','Elevado a Gerencia'];
+const CERRADOS = ['Resuelto','Sin solución','Elevado a Gerencia'];
+const SECTORES = ['Distribución','Seguridad e Higiene','Comercial / Preventa','Administración'];
+const ETAPAS   = [['1','1 · Bloqueo preventivo'],['2','2 · Testimonios internos'],['3','3 · Visita al cliente'],['4','4 · Mediación y acuerdo'],['5','5 · Rehabilitación y monitoreo']];
+const BLOQ     = ['Bloqueado','Rehabilitado','No corresponde'];
+const MON      = ['OK','Reincide'];
+const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const DEFAULT_CFG = { inicio:'2026-11', sla:2, formLink:'', responsables:{} };
+
+/* ===================== utilidades ===================== */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ls = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').trim().toUpperCase().replace(/\s+/g,' ');
+const normName = s => norm(s).replace(/[^A-Z0-9]+/g,' ').trim();
+const pad = n => String(n).padStart(2,'0');
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),2200); }
+function fmtDate(iso){ if(!iso) return ''; const [y,m,dd]=String(iso).slice(0,10).split('-'); return dd ? `${dd}/${m}/${y.slice(2)}` : String(iso); }
+function fmtDM(iso){ if(!iso) return ''; const [,m,dd]=String(iso).slice(0,10).split('-'); return `${dd}/${m}`; }
+function mesLbl(ym){ if(!ym) return ''; const [y,m]=ym.split('-'); return `${MESES[+m-1]}-${y.slice(2)}`; }
+function fmtTs(ts){
+  if (!ts) return '';
+  if (typeof ts==='string' && !/^\d+$/.test(ts)){ const m = ts.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/); return m ? `${m[3]}/${m[2]} ${m[4]}:${m[5]}` : ts; }
+  const d=new Date(+ts); return `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function todayISO(){ const d=new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function habiles(desde, hasta){ // días hábiles (lun-vie) después de "desde" hasta "hasta" inclusive
+  if (!desde || !hasta || hasta <= desde) return 0;
+  const a = new Date(desde+'T12:00:00'), b = new Date(hasta.slice(0,10)+'T12:00:00'); let n = 0;
+  for (let d = new Date(a); d < b; ){ d.setDate(d.getDate()+1); const w = d.getDay(); if (w && w!==6) n++; }
+  return n;
+}
+function diasEntre(a,b){ if(!a||!b) return null; return Math.round((new Date(b.slice(0,10)+'T12:00:00') - new Date(a.slice(0,10)+'T12:00:00'))/864e5); }
+const fmtN = (v,dec=1) => v==null||isNaN(v) ? '–' : (Math.round(v*10**dec)/10**dec).toLocaleString('es-AR');
+function showBanner(msg){ const b=$('#banner'); b.innerHTML=msg; b.style.display=msg?'':'none'; }
+
+/* ===================== capa de datos ===================== */
+let cbN = 0;
+function jsonp(url, cbParam){
+  return new Promise((ok, ko) => {
+    const cb = '__poe' + Date.now() + '_' + (cbN++);
+    const s = document.createElement('script');
+    const tm = setTimeout(() => { done(); ko(new Error('Tiempo de espera agotado')); }, 30000);
+    function done(){ clearTimeout(tm); try{ delete window[cb]; }catch(e){ window[cb]=undefined; } s.remove(); }
+    window[cb] = d => { done(); ok(d); };
+    s.onerror = () => { done(); ko(new Error('No se pudo conectar')); };
+    s.src = cbParam ? cbParam(url, cb) : url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+    document.head.appendChild(s);
+  });
+}
+function gvizRead(){
+  const base = `https://docs.google.com/spreadsheets/d/${RESP_ID}/gviz/tq?gid=${RESP_GID}&headers=1&_=${Date.now()}`;
+  return jsonp(base, (u, cb) => `${u}&tqx=out:json;responseHandler:${cb}`).then(d => {
+    if (!d || d.status==='error') throw new Error('La planilla de respuestas no se pudo leer (¿está compartida con “cualquier persona con el enlace”?)');
+    const cols = d.table.cols.map(c => c.label || c.id);
+    const rows = (d.table.rows||[]).map(r => cols.map((_, i) => {
+      const c = (r.c||[])[i]; if (!c || c.v==null) return '';
+      if (typeof c.v==='string' && /^Date\(/.test(c.v)){ const a = c.v.match(/\d+/g).map(Number); return `${a[0]}-${pad(a[1]+1)}-${pad(a[2])}T${pad(a[3]||0)}:${pad(a[4]||0)}:${pad(a[5]||0)}`; }
+      return c.v;
+    }));
+    return { head: cols, rows };
+  });
+}
+const DB = {
+  mode: APPS_SCRIPT_URL ? 'api' : 'local',
+  async load(){
+    if (this.mode!=='local'){
+      try{
+        const d = await jsonp(APPS_SCRIPT_URL + '?action=all');
+        if (!d || !d.ok) throw new Error(d && d.error || 'respuesta inválida');
+        this.mode = 'api'; setConn('ok'); showBanner('');
+        return { head:d.head, rows:d.rows, seg:d.seg||{}, cfg:d.cfg };
+      }catch(e){
+        console.error(e); this.mode = 'off'; setConn('off');
+        showBanner('⚠ No se pudo conectar con la planilla de seguimiento. Se muestran las respuestas pero no se puede guardar hasta que vuelva la conexión. ('+esc(e.message)+')');
+        const r = await gvizRead(); return { ...r, seg: S.seg || {}, cfg: S.cfg };
+      }
+    }
+    setConn('local');
+    showBanner('⚠ MODO LOCAL: los comentarios se guardan solo en este navegador. Para guardarlos en la planilla de seguimiento hay que pegar la URL del Apps Script (ver ANALISTA).');
+    const r = await gvizRead();
+    return { ...r, seg: ls.get('poe_seg', {}), cfg: ls.get('poe_cfg', null) };
+  },
+  async save(id, fields, snap){
+    if (this.mode==='off') throw new Error('Sin conexión con la planilla de seguimiento');
+    if (this.mode==='api'){
+      const d = await jsonp(APPS_SCRIPT_URL + '?action=save&data=' + encodeURIComponent(JSON.stringify({ id, fields, snap, user:S.user })));
+      if (!d || !d.ok) throw new Error(d && d.error || 'error al guardar');
+      return d.seg;
+    }
+    const all = ls.get('poe_seg', {}); const cur = all[id] || { id, cu:S.user, ct:Date.now() };
+    Object.assign(cur, snap, fields, { u:S.user, t:Date.now() }); all[id] = cur; ls.set('poe_seg', all);
+    return cur;
+  },
+  async saveCfg(cfg){
+    if (this.mode==='off') throw new Error('Sin conexión');
+    if (this.mode==='api'){
+      const d = await jsonp(APPS_SCRIPT_URL + '?action=cfg&data=' + encodeURIComponent(JSON.stringify({ cfg, pass: S.pass })));
+      if (!d || !d.ok) throw new Error(d && d.error || 'error al guardar');
+      return;
+    }
+    ls.set('poe_cfg', cfg);
+  }
+};
+function setConn(s){
+  const m = {ok:['#2ecc71','Planilla de seguimiento en línea'], off:['#e74c3c','Sin conexión al seguimiento'], local:['#f2b705','MODO LOCAL']}[s];
+  $('#conn').innerHTML = `<span class="dot" style="background:${m[0]}"></span>${m[1]}`;
+}
+
+/* ===================== estado ===================== */
+const S = { head:[], raw:[], rows:[], seg:{}, cfg:{...DEFAULT_CFG}, user: ls.get('poe_user', null), admin:false, pass:'', loadedAt:null, loading:false };
+try{ S.admin = sessionStorage.getItem('poe_admin')==='1'; S.pass = sessionStorage.getItem('poe_pass')||''; }catch(e){}
+const segOf = id => S.seg[id];
+
+/* ----- mapeo de columnas del formulario ----- */
+function mapCols(head){
+  const H = head.map(norm); const used = new Set(); const find = fn => { const i = H.findIndex((h,i)=>!used.has(i) && fn(h)); if (i>=0) used.add(i); return i; };
+  const m = {
+    ts:   find(h => /MARCA TEMPORAL|TIMESTAMP/.test(h)),
+    nro:  find(h => /CLIENTE/.test(h) && /(NRO|NUMERO|N°|NO\.|COD)/.test(h)),
+    cli:  find(h => /CLIENTE/.test(h) && /(NOMBRE|RAZON)/.test(h)),
+    col:  find(h => /COLABORADOR|CHOFER|AYUDANTE/.test(h)),
+    pla:  find(h => /PLANILLA/.test(h)),
+    mot:  find(h => /MOTIVO/.test(h)),
+    desc: find(h => /DESCRIP|ACONTECIDO|DETALLE/.test(h))
+  };
+  m.extra = head.map((h,i)=>i).filter(i => !used.has(i) && head[i]);
+  return m;
+}
+const TZFMT = new Intl.DateTimeFormat('sv-SE', { timeZone:'America/Argentina/Buenos_Aires', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
+const cell = (r,i) => i>=0 && r[i]!=null ? String(r[i]).trim() : '';
+function buildRows(){
+  const m = mapCols(S.head);
+  S.rows = S.raw.map((r, idx) => {
+    let ts = cell(r, m.ts);
+    const mm = ts.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/); // por si viene como texto dd/mm/aaaa
+    if (mm) ts = `${mm[3]}-${pad(mm[2])}-${pad(mm[1])}T${pad(mm[4])}:${mm[5]}:${mm[6]||'00'}`;
+    if (/(Z|[+-]\d\d:?\d\d)$/.test(ts)){ const d = new Date(ts); if (!isNaN(d)) ts = TZFMT.format(d).replace(' ','T'); } // viene en UTC → hora de Argentina
+    const nro = cell(r, m.nro).replace(/\.0+$/,''); const cliente = cell(r, m.cli);
+    const keyCli = nro ? 'c'+nro.replace(/\D/g,'') : 'n'+normName(cliente);
+    const id = (ts.replace(/\D/g,'').slice(0,14) || 'f'+(idx+2)) + '-' + (nro.replace(/\D/g,'') || normName(cliente).replace(/ /g,'').slice(0,12) || 'x');
+    return { id, ts, fecha: ts.slice(0,10), hora: ts.slice(11,16), mes: ts.slice(0,7), nro, cliente, keyCli,
+      colab: cell(r, m.col), planilla: cell(r, m.pla), motivo: cell(r, m.mot) || '(sin motivo)', desc: cell(r, m.desc),
+      extra: m.extra.map(i => [S.head[i], cell(r,i)]).filter(x => x[1]) };
+  }).filter(r => r.ts || r.cliente);
+  // ids únicos
+  const seen = {}; S.rows.forEach(r => { if (seen[r.id]) r.id += '_' + (++seen[r.id]); else seen[r.id] = 1; });
+  // historial por cliente
+  const by = {}; S.rows.forEach(r => (by[r.keyCli] ||= []).push(r));
+  Object.values(by).forEach(l => { l.sort((a,b)=>a.ts.localeCompare(b.ts)); l.forEach((r,i) => { r.cli = l; r.repIdx = i+1; r.repTot = l.length; }); });
+  S.rows.sort((a,b) => b.ts.localeCompare(a.ts));
+}
+const snapOf = r => ({ fr: r.ts.replace('T',' ').slice(0,16), nc: r.nro, cli: r.cliente, col: r.colab, mot: r.motivo });
+
+/* ===================== completitud / semáforo ===================== */
+const isClosed = sg => !!(sg && CERRADOS.includes(sg.status));
+function isComplete(sg){ return !!(sg && sg.plan && String(sg.plan).trim() && sg.sector && sg.resp && sg.status && (CERRADOS.includes(sg.status) || sg.fc)); }
+function slaVencido(r){ const sg = segOf(r.id) || {}; return !sg.fvis && !isClosed(sg) && habiles(r.fecha, todayISO()) > (+S.cfg.sla || 2); }
+function semaforo(r){
+  const sg = segOf(r.id); const comp = isComplete(sg);
+  if (comp && isClosed(sg)) return 'verde';
+  if (!comp) return 'rojo';
+  if ((sg.fc && sg.fc < todayISO()) || slaVencido(r)) return 'naranja';
+  return 'amarillo';
+}
+function pctPill(a,b,prev){
+  if (!b) return '<span class="pill-off">–</span>';
+  const p = Math.round(a/b*100); const cls = prev ? 'pill-off' : (p>=100 ? 'pill-ok' : p>=70 ? 'pill-mid' : 'pill-bad');
+  return `<span class="${cls}">${p}%</span> <span class="muted" style="font-size:11px">${a}/${b}</span>`;
+}
+function estadoCliente(keyCli){ // último bloqueo cargado del cliente
+  const l = (S.rows.find(r=>r.keyCli===keyCli)||{}).cli || [];
+  for (let i=l.length-1; i>=0; i--){ const sg = segOf(l[i].id); if (sg && sg.bloq) return sg.bloq; }
+  return '';
+}
+function actaFill(sg){ const ks = ['test','fvis','relato','acdesc','actrato','fbloq','frehab','mon1','mon2']; return [ks.filter(k => sg && sg[k]).length, ks.length]; }
+
+/* ===================== períodos ===================== */
+function fillPeriodo(sel, keep){
+  const v = keep ?? sel.value;
+  const ms = [...new Set(S.rows.map(r=>r.mes))].filter(Boolean).sort();
+  sel.innerHTML = `<option value="all">Todo</option><option value="ini">Desde inicio seguimiento (${mesLbl(S.cfg.inicio)})</option><option value="open">Solo casos abiertos</option>` +
+    ms.slice().reverse().map(m=>`<option value="${m}">${mesLbl(m)}</option>`).join('');
+  sel.value = [...sel.options].some(o=>o.value===v) ? v : 'all';
+}
+const inPeriodo = (r, p) => p==='all' || !p ? true : p==='ini' ? r.mes >= (S.cfg.inicio||'0000') : p==='open' ? !isClosed(segOf(r.id)) : r.mes === p;
+
+/* ===================== REVISIÓN ===================== */
+const FDEF = [
+  ['per','Período','sel'],['mot','Motivo','sel'],['col','Colaborador','sel'],['etapa','Etapa','sel'],['bloq','Bloqueo','sel'],
+  ['sem','Semáforo','sel'],['st','Status','sel'],['sec','Sector','sel'],['resp','Responsable','sel'],['q','Buscar','q'],['rep','Solo clientes que repiten','chk']
+];
+let FST = ls.get('poe_f', {}); let LIM = LIMIT;
+const fid = k => `rev-f-${k}`;
+const fval = k => { const el = document.getElementById(fid(k)); return !el ? '' : el.type==='checkbox' ? el.checked : el.value; };
+function buildFilterBar(){
+  $('#rev-filters').innerHTML = FDEF.map(([k,l,t]) =>
+    t==='chk' ? `<label class="f" style="flex-direction:row;align-items:center;gap:6px;text-transform:none;font-size:12px"><input type="checkbox" id="${fid(k)}"> ${l}</label>`
+    : t==='q' ? `<label class="f">${l}<input type="search" id="${fid(k)}" placeholder="cliente, código, texto…"></label>`
+    : `<label class="f">${l}<select id="${fid(k)}"></select></label>`).join('') +
+    `<button class="btn sec" id="rev-clear">Limpiar</button><button class="btn acc" id="rev-xls" title="Exporta lo que estás viendo con los filtros aplicados">⬇ Excel</button>`;
+  $('#rev-xls').onclick = () => exportRows(filtered(), 'POE-DIS-014_revision');
+  FDEF.forEach(([k,,t]) => document.getElementById(fid(k)).addEventListener(t==='q' ? 'input' : 'change', () => {
+    FDEF.forEach(([kk]) => FST[kk] = fval(kk)); ls.set('poe_f', FST); LIM = LIMIT; renderRev();
+  }));
+  $('#rev-clear').onclick = () => { FST = {}; ls.set('poe_f', FST); FDEF.forEach(([k,,t]) => { const el=document.getElementById(fid(k)); if (t==='chk') el.checked=false; else el.value=''; }); refreshFilters(); renderRev(); };
+  const hd = ['','Fecha','Cliente','Colaborador / Planilla','Motivo','Descripción de lo acontecido','Etapa / Bloqueo','Comentario seguimiento','Plan de acción','Sector','Responsable','Fecha compr.','Status','Acta','Última carga'];
+  $('#rev-tbl thead').innerHTML = '<tr>' + hd.map(h=>`<th>${h}</th>`).join('') + '</tr>';
+  $('#rev-tbl').addEventListener('change', e => { const el = e.target; const f = el.dataset.f; if (!f) return; saveField(el.closest('tr').dataset.id, f, el.value); });
+  $('#rev-tbl').addEventListener('click', e => { const b = e.target.closest('[data-acta]'); if (b) openActa(b.dataset.acta); });
+  $('#rev-kpis').addEventListener('click', e => {
+    const k = e.target.closest('[data-k]'); if (!k) return; const [f, v] = k.dataset.k.split(':');
+    const el = document.getElementById(fid(f)); if (el.type==='checkbox') el.checked = !el.checked; else el.value = el.value===v ? '' : v;
+    el.dispatchEvent(new Event('change'));
+  });
+  $('#rev-more').addEventListener('click', e => { if (e.target.matches('button')){ LIM += LIMIT; renderRev(); } });
+}
+function setOpts(sel, values, allLbl, keep){
+  const v = sel.value || keep || '';
+  sel.innerHTML = `<option value="">${allLbl}</option>` + values.map(x => typeof x==='string' ? `<option>${esc(x)}</option>` : `<option value="${esc(x.v)}">${esc(x.l)}</option>`).join('');
+  sel.value = [...sel.options].some(o=>o.value===v) ? v : '';
+}
+function refreshFilters(){
+  const g = k => document.getElementById(fid(k)); const F = FST;
+  fillPeriodo(g('per'), g('per').value || F.per);
+  setOpts(g('mot'), [...new Set(S.rows.map(r=>r.motivo))].sort(), 'Todos', F.mot);
+  setOpts(g('col'), [...new Set(S.rows.map(r=>r.colab).filter(Boolean))].sort(), 'Todos', F.col);
+  setOpts(g('etapa'), ETAPAS.map(([v,l])=>({v,l})).concat([{v:'-',l:'Sin etapa'}]), 'Todas', F.etapa);
+  setOpts(g('bloq'), BLOQ.concat([{v:'-',l:'Sin dato'}]), 'Todos', F.bloq);
+  setOpts(g('sem'), [{v:'rojo',l:'🔴 Falta completar'},{v:'naranja',l:'🟠 Vencido'},{v:'amarillo',l:'🟡 En curso'},{v:'verde',l:'🟢 Cerrado'}], 'Todos', F.sem);
+  setOpts(g('st'), STATUS.concat([{v:'-',l:'Sin status'}]), 'Todos', F.st);
+  setOpts(g('sec'), SECTORES.concat([{v:'-',l:'Sin sector'}]), 'Todos', F.sec);
+  setOpts(g('resp'), [...new Set(Object.values(S.seg).map(s=>s.resp).filter(Boolean).concat(responsables().map(r=>r.n)))].sort(), 'Todos', F.resp);
+  if (F.q && !g('q').value) g('q').value = F.q;
+  g('rep').checked = !!F.rep;
+}
+function filtered(){
+  const v = fval; const q = norm(v('q'));
+  return S.rows.filter(r => {
+    const sg = segOf(r.id) || {};
+    if (!inPeriodo(r, v('per'))) return false;
+    if (v('mot') && r.motivo!==v('mot')) return false;
+    if (v('col') && r.colab!==v('col')) return false;
+    const chk = (k, val) => { const x = v(k); return !x || (x==='-' ? !val : val===x); };
+    if (!chk('etapa', sg.etapa) || !chk('bloq', sg.bloq) || !chk('st', sg.status) || !chk('sec', sg.sector)) return false;
+    if (v('resp') && sg.resp!==v('resp')) return false;
+    if (v('rep') && r.repTot<2) return false;
+    if (v('sem') && semaforo(r)!==v('sem')) return false;
+    if (q){ const hay = norm([r.nro,r.cliente,r.colab,r.planilla,r.motivo,r.desc,sg.cmt,sg.plan,sg.resp,sg.test,sg.relato,sg.acdesc,sg.actrato].join(' ')); if (!hay.includes(q)) return false; }
+    return true;
+  });
+}
+function responsables(){ return Object.entries(S.cfg.responsables||{}).map(([k,v])=>({k, ...v})).sort((a,b)=>a.n.localeCompare(b.n)); }
+function respOptions(sector, cur){
+  const list = responsables().filter(r => !sector || r.s===sector);
+  let h = '<option value=""></option>';
+  if (!sector){ SECTORES.forEach(sec => { const l = list.filter(r=>r.s===sec); if (l.length) h += `<optgroup label="${esc(sec)}">` + l.map(r=>`<option${r.n===cur?' selected':''}>${esc(r.n)}</option>`).join('') + '</optgroup>'; }); }
+  else h += list.map(r=>`<option${r.n===cur?' selected':''}>${esc(r.n)}</option>`).join('');
+  if (cur && !list.some(r=>r.n===cur)) h += `<option selected>${esc(cur)}</option>`;
+  return h;
+}
+const opt = (list, cur, ph='') => `<option value="">${ph}</option>` + list.map(x => { const [v,l] = Array.isArray(x) ? x : [x,x]; return `<option value="${esc(v)}"${String(cur||'')===v?' selected':''}>${esc(l)}</option>`; }).join('');
+function histHtml(r){
+  if (r.repTot < 2) return '';
+  const items = r.cli.map(x => { const s = semaforo(x); return `<span class="${x.id===r.id?'c':''}">${fmtDM(x.fecha)} <span style="color:var(--s-${s==='verde'?'verde':s==='rojo'?'rojo':'naranja'});font-weight:700">${esc(x.motivo.length>28?x.motivo.slice(0,28)+'…':x.motivo)}</span></span>`; }).join(' → ');
+  return `<div><span class="badge b-rep" title="Reportes de conflicto de este cliente">REPITE ${r.repIdx}/${r.repTot}</span></div><div class="hist">${items}</div>`;
+}
+function prevHtml(r){ // intervenciones anteriores al mismo cliente
+  const prev = r.cli.filter(x => x.ts < r.ts && segOf(x.id) && (segOf(x.id).plan || segOf(x.id).acdesc));
+  if (!prev.length) return '';
+  const last = prev.at(-1); const sg = segOf(last.id);
+  const txt = sg.acdesc || sg.plan || '';
+  return `<div class="hist" style="background:#fff4e5">🛠 <b>Ya tuvo ${prev.length} mediación/plan${prev.length>1?'es':''}</b> · ${fmtDM(last.fecha)}: <i>${esc(txt.slice(0,90))}${txt.length>90?'…':''}</i> <span class="muted">(${esc(sg.status||'sin status')})</span></div>`;
+}
+function rowHtml(r){
+  const sg = segOf(r.id) || {}; const sm = semaforo(r);
+  const venc = sg.fc && sg.fc < todayISO() && !isClosed(sg); const sla = slaVencido(r);
+  const est = estadoCliente(r.keyCli); const [af, at] = actaFill(sg); const hb = habiles(r.fecha, todayISO());
+  const reincide = sg.mon1==='Reincide' || sg.mon2==='Reincide';
+  return `<tr data-id="${esc(r.id)}" class="r-${sm}">
+    <td class="sem sem-${sm}" title="${sm}"></td>
+    <td class="nowrap">${fmtDate(r.fecha)}<div class="who">${esc(r.hora)} hs · ${mesLbl(r.mes)}</div>${!isClosed(sg)?`<div class="who">${hb} día${hb===1?'':'s'} háb.</div>`:''}</td>
+    <td style="min-width:190px"><b>${esc(r.cliente||'(sin nombre)')}</b><div class="who">${r.nro?'Cód. '+esc(r.nro):'Sin código'}</div>
+      ${est==='Bloqueado'?'<span class="badge b-anu">🚫 BLOQUEADO</span>':est==='Rehabilitado'?'<span class="badge" style="background:#dff3e8;color:#11663a">REHABILITADO</span>':''}${reincide?'<span class="badge b-venc">REINCIDE</span>':''}
+      ${histHtml(r)}${prevHtml(r)}</td>
+    <td style="min-width:130px">${esc(r.colab)}<div class="who">${r.planilla?'Planilla '+esc(r.planilla):''}</div></td>
+    <td style="min-width:120px"><span class="drv"><b>${esc(r.motivo)}</b></span></td>
+    <td class="cm" style="min-width:220px">${r.desc?esc(r.desc):'<span class="muted">—</span>'}${r.extra.map(([h,v])=>`<div class="who" style="font-style:normal"><b>${esc(h)}:</b> ${esc(v)}</div>`).join('')}</td>
+    <td style="min-width:150px"><select data-f="etapa" title="Etapa del procedimiento">${opt(ETAPAS, sg.etapa, '— Etapa —')}</select><select data-f="bloq" style="margin-top:4px" title="Bloqueo preventivo del cliente">${opt(BLOQ, sg.bloq, '— Bloqueo —')}</select>${sla?'<span class="badge b-venc" title="Sin visita registrada">VISITA &gt; '+(+S.cfg.sla||2)+' DÍAS HÁB.</span>':''}</td>
+    <td><textarea data-f="cmt" placeholder="Qué pasó / qué se averiguó">${esc(sg.cmt||'')}</textarea></td>
+    <td><textarea data-f="plan" placeholder="Obligatorio">${esc(sg.plan||'')}</textarea></td>
+    <td><select data-f="sector">${opt(SECTORES, sg.sector)}</select></td>
+    <td><select data-f="resp">${respOptions(sg.sector, sg.resp)}</select></td>
+    <td><input type="date" data-f="fc" value="${esc(sg.fc||'')}">${venc?'<span class="badge b-venc">VENCIDO</span>':''}</td>
+    <td><select data-f="status">${opt(STATUS, sg.status)}</select></td>
+    <td class="nowrap"><button class="btn sec" data-acta="${esc(r.id)}" style="padding:5px 9px">📝 Acta</button><div class="who" style="text-align:center">${af}/${at}</div></td>
+    <td class="who nowrap">${sg.u?esc(sg.u)+'<br>'+fmtTs(sg.t):''}${sg.cu && sg.cu!==sg.u?`<br>alta: ${esc(sg.cu)}`:''}</td>
+  </tr>`;
+}
+function renderRev(){
+  const list = filtered(); const show = list.slice(0, LIM);
+  $('#rev-tbl tbody').innerHTML = show.length ? show.map(rowHtml).join('') :
+    `<tr><td colspan="15" class="muted" style="padding:30px;text-align:center">${S.rows.length ? 'No hay reportes con estos filtros. Probá “Limpiar”.' : (S.loadedAt ? 'Todavía no hay respuestas en el formulario. Apenas un chofer o ayudante cargue un reporte, aparece acá.' : 'Cargando respuestas…')}</td></tr>`;
+  $('#rev-more').innerHTML = list.length > show.length ? `<button class="btn sec">Mostrar más (${show.length} de ${list.length})</button>` : '';
+  $('#rev-count').textContent = `${list.length} reportes con estos filtros · ${S.rows.length} en total`;
+  renderRevKpis(list);
+}
+function renderRevKpis(list){
+  const c = {rojo:0,naranja:0,amarillo:0,verde:0}; list.forEach(r => c[semaforo(r)]++);
+  const comp = list.filter(r=>isComplete(segOf(r.id))).length;
+  const sem = fval('sem'); const blq = fval('bloq');
+  const bloqueados = new Set(list.filter(r => estadoCliente(r.keyCli)==='Bloqueado').map(r=>r.keyCli)).size;
+  const reps = list.filter(r=>r.repTot>1).length;
+  const k = (v,l,col,key,sel) => `<div class="kpi ${key?'click':''} ${sel?'sel':''}" ${key?`data-k="${key}"`:''} style="${col?`border-left:5px solid ${col}`:''}"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  $('#rev-kpis').innerHTML = k(list.length,'Reportes') + k(list.length ? Math.round(comp/list.length*100)+'%' : '–', `Con plan completo (${comp}/${list.length})`) +
+    k(c.rojo,'Falta completar','var(--s-rojo)','sem:rojo',sem==='rojo') + k(c.naranja,'Vencidos','var(--s-naranja)','sem:naranja',sem==='naranja') +
+    k(c.amarillo,'En curso','var(--s-amarillo)','sem:amarillo',sem==='amarillo') + k(c.verde,'Cerrados','var(--s-verde)','sem:verde',sem==='verde') +
+    k(bloqueados,'Clientes bloqueados','#222','bloq:Bloqueado',blq==='Bloqueado') + k(reps,'Reportes de clientes que repiten','#7b4fd6','rep:1',fval('rep'));
+}
+function patchRow(id){
+  const tr = document.querySelector(`#rev-tbl tr[data-id="${CSS.escape(id)}"]`); if (!tr) return;
+  const r = S.rows.find(x=>x.id===id); if (!r) return;
+  if (tr.contains(document.activeElement)){ const sm = semaforo(r); tr.className = 'r-'+sm; tr.firstElementChild.className = 'sem sem-'+sm; return; }
+  tr.outerHTML = rowHtml(r);
+}
+function patchClient(id){ const r = S.rows.find(x=>x.id===id); (r ? r.cli : [{id}]).forEach(x => patchRow(x.id)); }
+async function saveField(id, f, val){
+  if (!S.user){ askUser(() => saveField(id, f, val)); return; }
+  const r = S.rows.find(x=>x.id===id); if (!r) return;
+  const cur = S.seg[id] || {}; const fields = { [f]: val };
+  if (f==='sector' && cur.resp){ const rp = responsables().find(x=>x.n===cur.resp); if (rp && rp.s!==val) fields.resp = ''; }
+  if (f==='bloq' && val==='Bloqueado' && !cur.fbloq) fields.fbloq = todayISO();
+  if (f==='bloq' && val==='Rehabilitado' && !cur.frehab) fields.frehab = todayISO();
+  const prev = { ...cur };
+  S.seg[id] = Object.assign({}, cur, fields, { u:S.user, t:Date.now() }, cur.cu ? {} : { cu:S.user, ct:Date.now() });
+  try{ const res = await DB.save(id, fields, snapOf(r)); if (res) S.seg[id] = res; toast('Guardado ✓'); }
+  catch(e){ console.error(e); S.seg[id] = prev; toast('⚠ No se guardó: ' + e.message); }
+  patchClient(id); renderRevKpis(filtered()); if ($('#acta') && $('#acta').dataset.id===id) refreshActaMeta(id);
+}
+
+/* ----- Acta (ficha completa del caso) ----- */
+function openActa(id){
+  const r = S.rows.find(x=>x.id===id); if (!r) return; const sg = segOf(id) || {};
+  const ta = (f, l, ph, rows=3) => `<label class="f">${l}<textarea data-f="${f}" rows="${rows}" placeholder="${ph||''}">${esc(sg[f]||'')}</textarea></label>`;
+  const dt = (f, l) => `<label class="f">${l}<input type="date" data-f="${f}" value="${esc(sg[f]||'')}"></label>`;
+  const sl = (f, l, list) => `<label class="f">${l}<select data-f="${f}">${opt(list, sg[f])}</select></label>`;
+  $('#modalHost').innerHTML = `<div class="overlay" id="actaOv"><div class="modal acta" id="acta" data-id="${esc(id)}">
+    <div class="row noprint" style="justify-content:space-between;margin-bottom:6px"><div class="sect" style="margin:0">Acta POE-DIS-014</div><div class="row"><button class="btn sec" onclick="window.print()">🖨 Imprimir</button><button class="btn" onclick="closeActa()">Cerrar</button></div></div>
+    <h2 style="margin-bottom:2px">${esc(r.cliente||'(sin nombre)')} ${r.nro?`<span class="muted" style="font-weight:400">· Cód. ${esc(r.nro)}</span>`:''}</h2>
+    <div class="muted" id="actaMeta" style="font-size:12px;margin-bottom:10px"></div>
+    <h3>A · Datos del reporte inicial</h3>
+    <table class="kv"><tr><td>Fecha y hora</td><td>${fmtDate(r.fecha)} ${esc(r.hora)} hs</td><td>Planilla</td><td>${esc(r.planilla||'—')}</td></tr>
+      <tr><td>Colaborador</td><td>${esc(r.colab||'—')}</td><td>Motivo</td><td><b>${esc(r.motivo)}</b></td></tr>
+      <tr><td>Descripción</td><td colspan="3" style="font-style:italic">${esc(r.desc||'—')}</td></tr>
+      ${r.extra.map(([h,v])=>`<tr><td>${esc(h)}</td><td colspan="3">${esc(v)}</td></tr>`).join('')}</table>
+    <div class="agrid">${sl('bloq','Estado de atención del cliente',BLOQ)}${dt('fbloq','Fecha de bloqueo')}${sl('etapa','Etapa actual',ETAPAS)}</div>
+    <h3>B · Resumen de relatos</h3>
+    ${ta('test','Relato del colaborador y testigos (Etapa 2)','Quién declaró, qué dijo, si es un hecho aislado o reiterado…',4)}
+    <div class="agrid">${dt('fvis','Fecha de visita al PDV (Etapa 3)')}</div>
+    ${ta('relato','Relato del cliente e inspección del punto de descarga','Versión del titular/encargado y lo que relevó Seguridad…',4)}
+    <h3>C · Acuerdo de mediación (Etapa 4)</h3>
+    ${ta('acdesc','Condición de descarga acordada','Lugar de estiba, uso de carro, envases, horarios, responsable en el local…')}
+    ${ta('actrato','Compromiso de trato y recepción','')}
+    <h3>D · Rehabilitación y monitoreo (Etapa 5)</h3>
+    <div class="agrid">${dt('frehab','Fecha de rehabilitación')}${sl('mon1','Monitoreo entrega 1',MON)}${sl('mon2','Monitoreo entrega 2',MON)}</div>
+    <h3>Plan y cierre</h3>
+    ${ta('plan','Plan de acción','Obligatorio',2)}
+    <div class="agrid">${sl('sector','Sector',SECTORES)}<label class="f">Responsable<select data-f="resp">${respOptions(sg.sector, sg.resp)}</select></label>${dt('fc','Fecha compromiso')}${sl('status','Status',STATUS)}</div>
+    ${ta('cmt','Comentario de seguimiento','',2)}
+    ${r.repTot>1?`<h3>Otros reportes de este cliente</h3><table class="kv">${r.cli.filter(x=>x.id!==r.id).map(x=>{const g=segOf(x.id)||{};return `<tr><td>${fmtDate(x.fecha)}</td><td>${esc(x.motivo)}</td><td>${esc(x.colab)}</td><td>${esc(g.status||'sin status')}</td></tr>`;}).join('')}</table>`:''}
+    <table class="firmas"><tr><td>Supervisor de Distribución<br><br>Firma y aclaración</td><td>Seguridad e Higiene / Patrimonial<br><br>Firma y aclaración</td></tr></table>
+  </div></div>`;
+  refreshActaMeta(id);
+  const m = $('#acta');
+  m.addEventListener('change', e => { const f = e.target.dataset.f; if (f){ saveField(id, f, e.target.value); if (f==='sector'){ const sel = m.querySelector('[data-f="resp"]'); sel.innerHTML = respOptions(e.target.value, ''); } } });
+  $('#actaOv').addEventListener('mousedown', e => { if (e.target.id==='actaOv') closeActa(); });
+}
+function refreshActaMeta(id){ const sg = segOf(id)||{}; const r = S.rows.find(x=>x.id===id); const el = $('#actaMeta'); if (!el || !r) return;
+  const sm = semaforo(r); el.innerHTML = `<span class="sq sem-${sm}" style="vertical-align:middle"></span> ${{rojo:'Falta completar',naranja:'Vencido',amarillo:'En curso',verde:'Cerrado'}[sm]}${sg.u?` · última carga ${esc(sg.u)} ${fmtTs(sg.t)}`:''}`;
+  ['fbloq','frehab'].forEach(k => { const inp = document.querySelector(`#acta [data-f="${k}"]`); if (inp && document.activeElement!==inp) inp.value = sg[k]||''; });
+}
+function closeActa(){ $('#modalHost').innerHTML = ''; renderAll(); }
+document.addEventListener('keydown', e => { if (e.key==='Escape' && $('#acta')) closeActa(); });
+
+/* ----- usuario ----- */
+function askUser(after){
+  $('#modalHost').insertAdjacentHTML('beforeend', `<div class="overlay" id="userOv"><div class="modal"><h2>¿Quién está cargando?</h2>
+    <p class="muted" style="margin-top:-6px">Queda registrado en cada comentario.</p>
+    <div class="row"><input id="userIn" placeholder="Nombre y apellido" style="flex:1" value="${esc(S.user||'')}"><button class="btn" id="userOk">Listo</button></div></div></div>`);
+  const ok = () => { const v = $('#userIn').value.trim(); if (!v) return; S.user = v; ls.set('poe_user', v); $('#userOv').remove(); renderUser(); if (after) after(); };
+  $('#userOk').onclick = ok; $('#userIn').onkeydown = e => { if (e.key==='Enter') ok(); }; $('#userIn').focus();
+}
+function renderUser(){ $('#userChip').textContent = '👤 ' + (S.user || 'Identificarse'); }
+$('#userChip').onclick = () => askUser();
+
+/* ===================== RESUMEN ===================== */
+function bars(arr, top, empty, color){
+  if (!arr.length) return `<p class="muted">${empty}</p>`; const mx = Math.max(...arr.map(x=>x[1]));
+  return '<table><tr><th>Concepto</th><th></th><th class="r">Cant.</th></tr>' + arr.slice(0,top).map(([k,v]) => `<tr><td style="width:55%">${esc(k)}</td><td><div class="hbar" style="width:${v/mx*100}%;${color?'background:'+color:''}"></div></td><td class="r" style="width:40px"><b>${v}</b></td></tr>`).join('') + '</table>';
+}
+const countBy = (list, fn) => { const m = {}; list.forEach(r => { const k = fn(r); if (k) m[k] = (m[k]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); };
+function planesHtml(list){
+  const by = fn => countBy(list.filter(r=>segOf(r.id)), r => fn(segOf(r.id)) || '(sin dato)');
+  const sm = {rojo:0,naranja:0,amarillo:0,verde:0}; list.forEach(r=>sm[semaforo(r)]++);
+  const tb = (title, arr) => `<div><h3>${title}</h3><table><tr><th>${title.replace('Por ','')}</th><th class="r">Cant.</th></tr>${arr.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="r"><b>${v}</b></td></tr>`).join('') || '<tr><td class="muted">Sin cargas</td></tr>'}</table></div>`;
+  return `<div class="legend" style="margin-bottom:12px">
+    <span><i class="sq" style="background:var(--s-rojo)"></i>Falta completar: <b>${sm.rojo}</b></span><span><i class="sq" style="background:var(--s-naranja)"></i>Vencidos: <b>${sm.naranja}</b></span>
+    <span><i class="sq" style="background:var(--s-amarillo)"></i>En curso: <b>${sm.amarillo}</b></span><span><i class="sq" style="background:var(--s-verde)"></i>Cerrados: <b>${sm.verde}</b></span></div>
+    <div class="grid2" style="gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">${tb('Por status',by(s=>s.status))}${tb('Por sector',by(s=>s.sector))}${tb('Por responsable',by(s=>s.resp))}</div>`;
+}
+function efectoHtml(list){
+  // mediado = tiene acuerdo cargado o etapa >= 4 o status cerrado
+  const med = list.filter(r => { const sg = segOf(r.id)||{}; return sg.acdesc || sg.actrato || +sg.etapa >= 4 || isClosed(sg); });
+  if (!med.length) return '<p class="muted">Todavía no hay mediaciones cargadas en el período.</p>';
+  let ok=0, rep=0, mon=0, monR=0;
+  med.forEach(r => { const sg = segOf(r.id)||{}; const after = r.cli.filter(x => x.ts > r.ts); if (after.length) rep++; else ok++;
+    [sg.mon1, sg.mon2].forEach(m => { if (m) { mon++; if (m==='Reincide') monR++; } }); });
+  const row = (l,v,cls) => `<tr><td>${l}</td><td class="r"><span class="${cls}">${v}</span></td></tr>`;
+  return `<table><tr><th>Después de la mediación…</th><th class="r">Casos</th></tr>` + row('✅ No volvió a haber reportes del cliente', ok, 'pill-ok') + row('⚠ El cliente volvió a tener un reporte', rep, 'pill-bad') +
+    `<tr style="background:#f6f7f9"><td><b>Total mediados</b></td><td class="r"><b>${med.length}</b></td></tr>` +
+    `<tr><td>Entregas monitoreadas post-mediación</td><td class="r">${mon}</td></tr>` + row('Entregas con reincidencia', monR, monR ? 'pill-bad' : 'pill-off') + `</table>`;
+}
+function procHtml(list){
+  const conVis = list.filter(r => (segOf(r.id)||{}).fvis);
+  const enSla = conVis.filter(r => habiles(r.fecha, segOf(r.id).fvis) <= (+S.cfg.sla||2)).length;
+  const bloq = list.filter(r => (segOf(r.id)||{}).bloq).length;
+  const reh = list.filter(r => { const sg = segOf(r.id)||{}; return sg.frehab; });
+  const dias = reh.map(r => diasEntre(r.fecha, segOf(r.id).frehab)).filter(x => x!=null && x>=0);
+  const prom = dias.length ? dias.reduce((a,b)=>a+b,0)/dias.length : null;
+  const mon2 = reh.filter(r => { const sg = segOf(r.id); return sg.mon1 && sg.mon2; }).length;
+  return `<table>
+    <tr><td>Bloqueo registrado</td><td class="r">${pctPill(bloq, list.length)}</td></tr>
+    <tr><td>Visita al cliente registrada</td><td class="r">${pctPill(conVis.length, list.length)}</td></tr>
+    <tr><td>Visitas dentro de ${+S.cfg.sla||2} días hábiles</td><td class="r">${pctPill(enSla, conVis.length)}</td></tr>
+    <tr><td>Rehabilitados con las 2 entregas monitoreadas</td><td class="r">${pctPill(mon2, reh.length)}</td></tr>
+    <tr><td>Días promedio del reporte a la rehabilitación</td><td class="r"><b>${fmtN(prom,1)}</b></td></tr></table>`;
+}
+function resList(){ const per = $('#rs-per').value, mot = $('#rs-mot').value; return S.rows.filter(r => inPeriodo(r, per) && (!mot || r.motivo===mot)); }
+function renderRes(){
+  fillPeriodo($('#rs-per'), $('#rs-per').value || ls.get('poe_rsPer','all'));
+  setOpts($('#rs-mot'), [...new Set(S.rows.map(r=>r.motivo))].sort(), 'Todos', ls.get('poe_rsMot',''));
+  const list = resList(); const mot = $('#rs-mot').value;
+  const comp = list.filter(r=>isComplete(segOf(r.id))).length; const cerr = list.filter(r=>isClosed(segOf(r.id))).length;
+  const clientes = new Set(list.map(r=>r.keyCli)); const bloqueados = [...clientes].filter(k => estadoCliente(k)==='Bloqueado').length;
+  const repiten = new Set(list.filter(r=>r.repTot>1).map(r=>r.keyCli)).size;
+  const k = (v,l) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  $('#rs-kpis').innerHTML = k(list.length,'Reportes') + k(clientes.size,'Clientes involucrados') + k(new Set(list.map(r=>r.colab).filter(Boolean)).size,'Colaboradores que reportaron') +
+    k(`<span style="color:var(--det)">${bloqueados}</span>`,'Clientes bloqueados hoy') + k(`<span style="color:#7b4fd6">${repiten}</span>`,'Clientes con más de un reporte') +
+    k(list.length?Math.round(comp/list.length*100)+'%':'–', `Con plan completo (${comp}/${list.length})`) + k(list.length?Math.round(cerr/list.length*100)+'%':'–', `Cerrados (${cerr}/${list.length})`);
+  // por mes
+  const base = S.rows.filter(r => !mot || r.motivo===mot);
+  const ms = [...new Set(base.map(r=>r.mes))].filter(Boolean).sort();
+  let h = '<tr><th>Mes</th><th class="r">Reportes</th><th class="r">Clientes</th><th>Estado</th><th class="r">Cerrados</th><th class="r">Con plan completo</th></tr>';
+  ms.forEach(m => { const l = base.filter(r=>r.mes===m); const c = {rojo:0,naranja:0,amarillo:0,verde:0}; l.forEach(r=>c[semaforo(r)]++); const cp = l.filter(r=>isComplete(segOf(r.id))).length;
+    h += `<tr><td class="nowrap"><b>${mesLbl(m)}</b></td><td class="r">${l.length}</td><td class="r">${new Set(l.map(r=>r.keyCli)).size}</td>
+      <td><div class="bar">${['rojo','naranja','amarillo','verde'].map(s=>`<div style="width:${c[s]/l.length*100}%;background:var(--s-${s})" title="${s}: ${c[s]}"></div>`).join('')}</div></td>
+      <td class="r">${c.verde}</td><td class="r">${pctPill(cp, l.length, m < S.cfg.inicio)}</td></tr>`; });
+  if (ms.length){ const cp = base.filter(r=>isComplete(segOf(r.id))).length; h += `<tr style="background:#f6f7f9"><td><b>Total</b></td><td class="r"><b>${base.length}</b></td><td class="r">${new Set(base.map(r=>r.keyCli)).size}</td><td></td><td class="r">${base.filter(r=>isClosed(segOf(r.id))).length}</td><td class="r">${pctPill(cp, base.length)}</td></tr>`; }
+  $('#rs-mes').innerHTML = ms.length ? h : '<tr><td class="muted">Todavía no hay reportes.</td></tr>';
+  $('#rs-mot-t').innerHTML = bars(countBy(list, r=>r.motivo), 15, 'Sin reportes en el período.');
+  const abiertos = list.filter(r => !isClosed(segOf(r.id)));
+  $('#rs-etapa').innerHTML = bars(ETAPAS.map(([v,l]) => [l, abiertos.filter(r => (segOf(r.id)||{}).etapa===v).length]).concat([['Sin etapa cargada', abiertos.filter(r=>!(segOf(r.id)||{}).etapa).length]]).filter(x=>x[1]), 10, 'No hay casos abiertos.', 'var(--acc)');
+  $('#rs-planes').innerHTML = planesHtml(list);
+  $('#rs-efecto').innerHTML = efectoHtml(list);
+  $('#rs-proc').innerHTML = list.length ? procHtml(list) : '<p class="muted">Sin reportes en el período.</p>';
+  $('#rs-cli').innerHTML = bars(countBy(list, r => (r.cliente||'(sin nombre)') + (r.nro?` (${r.nro})`:'')), 12, 'Sin reportes en el período.');
+  $('#rs-col').innerHTML = bars(countBy(list, r => r.colab), 12, 'Sin reportes en el período.', 'var(--navy2)');
+}
+$('#rs-per').onchange = () => { ls.set('poe_rsPer', $('#rs-per').value); renderRes(); };
+$('#rs-mot').onchange = () => { ls.set('poe_rsMot', $('#rs-mot').value); renderRes(); };
+
+/* ===================== INFO ===================== */
+function renderInfo(){
+  $('#lnkPoe').href = POE_URL;
+  const fl = $('#lnkForm'); fl.href = S.cfg.formLink || '#'; fl.style.display = S.cfg.formLink ? '' : 'none';
+  $$('.slaTxt').forEach(e => e.textContent = +S.cfg.sla || 2);
+  $('#infoObj').innerHTML = `Objetivo: <b>100% de los reportes con plan completo desde ${mesLbl(S.cfg.inicio)}</b> y visita al cliente dentro de ${+S.cfg.sla||2} días hábiles.`;
+  const fs = S.rows.map(r=>r.fecha).filter(Boolean).sort();
+  $('#infoMeta').innerHTML = S.rows.length ? `${S.rows.length} reportes del ${fmtDate(fs[0])} al ${fmtDate(fs.at(-1))}. Se actualiza solo cada minuto.` : 'Todavía no hay reportes cargados en el formulario.';
+}
+
+/* ===================== ANALISTA ===================== */
+function renderAdm(){
+  $('#admLock').style.display = S.admin ? 'none' : ''; $('#admBody').style.display = S.admin ? '' : 'none';
+  if (!S.admin) return;
+  $$('.iniTxt').forEach(e => e.textContent = mesLbl(S.cfg.inicio));
+  // cumplimiento
+  const ms = [...new Set(S.rows.map(r=>r.mes))].filter(Boolean).sort().reverse();
+  const cols = SECTORES;
+  let h = '<tr><th>Mes</th><th class="r">Reportes</th><th class="r">Con plan completo</th><th class="r">Cerrados</th><th class="r">Visita en plazo</th></tr>';
+  const line = (lbl, l, prev, bg) => { const vis = l.filter(r=>(segOf(r.id)||{}).fvis); const ins = vis.filter(r=>habiles(r.fecha, segOf(r.id).fvis) <= (+S.cfg.sla||2)).length;
+    return `<tr${bg?' style="background:#f6f7f9"':''}><td class="nowrap ${prev?'prev':''}"><b>${lbl}</b>${prev?' <span class="who">previo</span>':''}</td><td class="r">${l.length}</td><td class="r">${pctPill(l.filter(r=>isComplete(segOf(r.id))).length, l.length, prev)}</td><td class="r">${pctPill(l.filter(r=>isClosed(segOf(r.id))).length, l.length, prev)}</td><td class="r">${pctPill(ins, l.length, prev)}</td></tr>`; };
+  h += line('Desde inicio', S.rows.filter(r=>r.mes >= S.cfg.inicio), false, true);
+  ms.forEach(m => h += line(mesLbl(m), S.rows.filter(r=>r.mes===m), m < S.cfg.inicio));
+  $('#comp').innerHTML = S.rows.length ? h : '<tr><td class="muted">Todavía no hay reportes.</td></tr>';
+  $('#admSrc').innerHTML = `
+    <div>📥 <b>Respuestas del formulario</b> (solo lectura): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${RESP_ID}/edit">abrir planilla</a></div>
+    <div>📝 <b>Seguimiento / comentarios</b> (archivo aparte): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${SEG_ID}/edit">abrir planilla</a> · pestañas Seguimiento, Historial y Config</div>
+    <div>🔌 Conexión: <b>${DB.mode==='api' ? '<span style="color:var(--prom)">Apps Script conectado</span>' : DB.mode==='off' ? '<span style="color:var(--det)">Apps Script configurado pero sin respuesta</span>' : '<span style="color:#a07800">MODO LOCAL — falta pegar APPS_SCRIPT_URL</span>'}</b></div>`;
+  const ae = document.activeElement; const editing = ae && ae.closest && ae.closest('#t-adm') && ae.matches('input,textarea,select');
+  if (!editing){ $('#cfgIni').value = S.cfg.inicio || ''; $('#cfgSla').value = S.cfg.sla || 2; $('#cfgForm').value = S.cfg.formLink || ''; }
+  $('#newRespSec').innerHTML = SECTORES.map(s=>`<option>${esc(s)}</option>`).join('');
+  $('#tblResp').innerHTML = '<tr><th>Responsable</th><th>Sector</th><th></th></tr>' + (responsables().map(r => `<tr><td>${esc(r.n)}</td><td>${esc(r.s)}</td><td class="r"><button class="btn sec" data-del="${esc(r.k)}" style="padding:3px 8px">Quitar</button></td></tr>`).join('') || '<tr><td colspan="3" class="muted">Sin responsables cargados.</td></tr>');
+  $('#admMeta').innerHTML = `Última lectura: ${S.loadedAt ? fmtTs(S.loadedAt) : '–'} · ${S.rows.length} reportes · ${Object.keys(S.seg).length} con seguimiento.`;
+}
+$('#admGo').onclick = () => { if ($('#admPass').value === ADMIN_PASS){ S.admin = true; S.pass = $('#admPass').value; try{ sessionStorage.setItem('poe_admin','1'); sessionStorage.setItem('poe_pass', S.pass); }catch(e){} $('#admErr').style.display='none'; renderAdm(); } else $('#admErr').style.display=''; };
+$('#admPass').onkeydown = e => { if (e.key==='Enter') $('#admGo').click(); };
+async function saveCfg(patch){
+  const nc = { ...S.cfg, ...patch };
+  try{ await DB.saveCfg(nc); S.cfg = nc; toast('Configuración guardada ✓'); renderAll(); } catch(e){ toast('⚠ ' + e.message); }
+}
+$('#cfgSave').onclick = () => saveCfg({ inicio: $('#cfgIni').value || DEFAULT_CFG.inicio, sla: Math.max(1, +$('#cfgSla').value || 2), formLink: $('#cfgForm').value.trim() });
+$('#addResp').onclick = () => { const n = $('#newRespName').value.trim(); if (!n) return; const k = 'r' + Date.now(); saveCfg({ responsables: { ...(S.cfg.responsables||{}), [k]: { n, s: $('#newRespSec').value } } }); $('#newRespName').value = ''; };
+$('#tblResp').onclick = e => { const k = e.target.dataset.del; if (!k) return; const r = { ...(S.cfg.responsables||{}) }; delete r[k]; saveCfg({ responsables: r }); };
+
+/* ===================== EXPORTAR ===================== */
+function exportRows(list, name){
+  if (typeof XLSX==='undefined'){ toast('No cargó la librería de Excel'); return; }
+  const data = list.map(r => { const sg = segOf(r.id) || {}; return {
+    'Fecha': r.fecha, 'Hora': r.hora, 'Nro cliente': r.nro, 'Cliente': r.cliente, 'Colaborador': r.colab, 'Planilla': r.planilla, 'Motivo': r.motivo, 'Descripción': r.desc,
+    'Semáforo': semaforo(r), 'Repite': r.repTot>1 ? `${r.repIdx}/${r.repTot}` : '', 'Etapa': (ETAPAS.find(e=>e[0]===String(sg.etapa))||[,''])[1], 'Bloqueo': sg.bloq||'', 'Fecha bloqueo': sg.fbloq||'',
+    'Comentario seguimiento': sg.cmt||'', 'Declaración colaborador y testigos': sg.test||'', 'Fecha visita PDV': sg.fvis||'', 'Relato del cliente': sg.relato||'',
+    'Condición de descarga acordada': sg.acdesc||'', 'Compromiso de trato': sg.actrato||'', 'Plan de acción': sg.plan||'', 'Sector': sg.sector||'', 'Responsable': sg.resp||'',
+    'Fecha compromiso': sg.fc||'', 'Status': sg.status||'', 'Fecha rehabilitación': sg.frehab||'', 'Monitoreo entrega 1': sg.mon1||'', 'Monitoreo entrega 2': sg.mon2||'',
+    'Última carga': sg.u ? `${sg.u} ${fmtTs(sg.t)}` : '' }; });
+  const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data.length ? data : [{ 'Sin datos': '' }]), 'Reportes');
+  XLSX.writeFile(wb, `${name}_${todayISO()}.xlsx`);
+}
+function exportRes(){
+  if (typeof XLSX==='undefined'){ toast('No cargó la librería de Excel'); return; }
+  const list = resList(); const wb = XLSX.utils.book_new();
+  const ms = [...new Set(list.map(r=>r.mes))].sort();
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(ms.map(m => { const l = list.filter(r=>r.mes===m); return { Mes: mesLbl(m), Reportes: l.length, Clientes: new Set(l.map(r=>r.keyCli)).size, 'Con plan completo': l.filter(r=>isComplete(segOf(r.id))).length, Cerrados: l.filter(r=>isClosed(segOf(r.id))).length }; })), 'Por mes');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(countBy(list, r=>r.motivo).map(([k,v])=>({ Motivo:k, Reportes:v }))), 'Motivos');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(countBy(list, r=>(r.cliente||'')+(r.nro?` (${r.nro})`:'')).map(([k,v])=>({ Cliente:k, Reportes:v, 'Estado atención': estadoCliente(list.find(r=>((r.cliente||'')+(r.nro?` (${r.nro})`:''))===k).keyCli) }))), 'Clientes');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(countBy(list, r=>r.colab).map(([k,v])=>({ Colaborador:k, Reportes:v }))), 'Colaboradores');
+  XLSX.writeFile(wb, `POE-DIS-014_resumen_${todayISO()}.xlsx`);
+}
+$('#btnExport').onclick = () => exportRows(S.rows, 'POE-DIS-014_seguimiento');
+
+/* ===================== navegación / carga ===================== */
+function showTab(t){ $$('.tab').forEach(s => s.classList.toggle('on', s.id==='t-'+t)); $$('nav button').forEach(b => b.classList.toggle('on', b.dataset.t===t)); ls.set('poe_tab', t); renderTab(t); }
+function renderTab(t){ if (t==='info') renderInfo(); else if (t==='rev'){ refreshFilters(); renderRev(); } else if (t==='res') renderRes(); else if (t==='adm') renderAdm(); }
+function renderAll(){ renderTab(ls.get('poe_tab','rev')); $('#baseInfo').textContent = S.loadedAt ? `${S.rows.length} reportes · leído ${fmtTs(S.loadedAt)}` : 'leyendo…'; }
+$('#nav').onclick = e => { const b = e.target.closest('button[data-t]'); if (b) showTab(b.dataset.t); };
+const editing = () => { const a = document.activeElement; return !!($('#acta') || $('#userOv') || (a && a.closest && a.closest('#rev-tbl') && a.matches('textarea,input,select'))); };
+async function load(manual){
+  if (S.loading) return; S.loading = true; if (manual) $('#btnRefresh').textContent = '⟳ Leyendo…';
+  try{
+    const d = await DB.load();
+    S.head = d.head || []; S.raw = d.rows || []; S.seg = d.seg || {}; if (d.cfg) S.cfg = { ...DEFAULT_CFG, ...d.cfg };
+    S.loadedAt = Date.now(); buildRows();
+    if (manual || !editing()) renderAll(); else $('#baseInfo').textContent = `${S.rows.length} reportes · leído ${fmtTs(S.loadedAt)}`;
+    if (manual) toast('Actualizado ✓');
+  }catch(e){ console.error(e); showBanner('⚠ ' + esc(e.message)); }
+  finally{ S.loading = false; $('#btnRefresh').textContent = '⟳ Actualizar'; }
+}
+$('#btnRefresh').onclick = () => load(true);
+buildFilterBar(); renderUser(); showTab(ls.get('poe_tab','rev'));
+load();
+setInterval(() => { if (!document.hidden) load(false); }, REFRESH_MS);
+</script>
+</body>
+</html>
