@@ -466,8 +466,8 @@ function jsonp(url, cbParam){
     document.head.appendChild(s);
   });
 }
-function gvizRead(id = RESP_ID, gid = RESP_GID){
-  const base = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?gid=${gid}&headers=1&_=${Date.now()}`;
+function gvizRead(id = RESP_ID, gid = RESP_GID, tq = ''){
+  const base = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?gid=${gid}&headers=1${tq ? '&tq=' + encodeURIComponent(tq) : ''}&_=${Date.now()}`;
   return jsonp(base, (u, cb) => `${u}&tqx=out:json;responseHandler:${cb}`).then(d => {
     if (!d || d.status==='error') throw new Error('La planilla no se pudo leer (¿está compartida con “cualquier persona con el enlace”?)');
     const cols = d.table.cols.map(c => c.label || c.id);
@@ -935,6 +935,7 @@ function renderAdm(){
   $('#admSrc').innerHTML = `
     <div>📥 <b>Respuestas del formulario</b> (solo lectura): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${RESP_ID}/edit">abrir planilla</a></div>
     <div>⛔ <b>Clientes suspendidos</b> (solo lectura): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${SUS_ID}/edit#gid=${SUS_GID}">abrir planilla</a> ${S.susErr?'<span style="color:var(--det)">· no se pudo leer</span>':''}</div>
+    <div>📇 <b>Base de clientes</b> (solo lectura): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${CLI_ID}/edit">abrir planilla</a> ${S.cliErr?'<span style="color:var(--det)">· no se pudo leer</span>':`· ${Object.keys(S.cli).length} clientes`}</div>
     <div>📝 <b>Seguimiento / comentarios</b> (archivo aparte): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${SEG_ID}/edit">abrir planilla</a> · pestañas Seguimiento, Pagos, Historial y Config</div>
     <div>🔌 Conexión: <b>${DB.mode==='api' ? '<span style="color:var(--prom)">Apps Script conectado</span>' : DB.mode==='off' ? '<span style="color:var(--det)">Apps Script configurado pero sin respuesta</span>' : '<span style="color:#a07800">MODO LOCAL — falta pegar APPS_SCRIPT_URL</span>'}</b></div>`;
   const ae = document.activeElement; const editing = ae && ae.closest && ae.closest('#t-adm') && ae.matches('input,textarea,select');
@@ -983,6 +984,10 @@ const SUS_ID  = '1FBrsS_SAlZC3_GpuWe7L4KoFeaeATls4-BRujjoXSG0';
 const SUS_GID = 642664049;
 const ESCALA = [7, 14, 20, null];           // null = bloqueo indefinido
 const ORD = ['1.ª','2.ª','3.ª','4.ª'];
+// Base de clientes (Tablero de ruta): código, razón social, fantasía, dirección, ruta de venta y cobranza
+const CLI_ID = '1o6Y0is6NK0BTW0z4Gj5coFKQ_3SFc9ZYArQYoaERDio', CLI_GID = 0;
+const CLI_TQ = 'select D, F, G, O, P, AW, CC, CE, CF';
+const CLI_REFRESH_MS = 30 * 60000;
 const TIPOS_PAGO = ['Sin dinero al momento de la entrega','Pago incompleto','Hizo bajar el pedido y no pagó','Rechazo de mercadería sin dinero','Cheque rechazado / transferencia no acreditada','Deuda de vacíos en comodato','Otro'];
 const normCode = s => String(s ?? '').replace(/\.0+$/,'').replace(/\D/g,'').replace(/^0+/,'');
 function pDate(v){
@@ -995,7 +1000,7 @@ function splitCliente(raw){
   parts.forEach(p => { const m = p.match(/^(\d+)\s*(.*)$/); if (m && !rest.length){ codes.push(normCode(m[1])); if (m[2]) rest.push(m[2]); } else rest.push(p); });
   return { codes, name: rest.join(' - ').trim() || String(raw).trim() };
 }
-Object.assign(S, { sus:[], susEv:[], susByCode:{}, susByName:{}, susErr:'', susAt:null, pagos:[], pagosMissing:false });
+Object.assign(S, { cli:{}, cliByName:{}, cliAt:null, cliErr:'', sus:[], susEv:[], susByCode:{}, susByName:{}, susErr:'', susAt:null, pagos:[], pagosMissing:false });
 
 function buildSus(head, rows){
   const H = head.map(norm); const ix = (re, d) => { const i = H.findIndex(h => re.test(h)); return i >= 0 ? i : d; };
@@ -1055,6 +1060,7 @@ function susWarn(el){
 }
 function renderSan(){
   susWarn($('#san-warn'));
+  if (S.cliErr) $('#san-warn').innerHTML += `<div class="warn" style="margin-bottom:12px">⚠ No se pudo leer la base de clientes (${esc(S.cliErr)}). Los nombres se completan con los clientes de las otras planillas.</div>`;
   if (S.pagosMissing) $('#san-warn').innerHTML += `<div class="warn" style="margin-bottom:12px">⚠ El Apps Script todavía no tiene la parte de pagos. Pegá el <b>Codigo.gs</b> nuevo y publicá una versión nueva (ver ANALISTA). Hasta entonces no se pueden registrar problemas de pago.</div>`;
   const al = alertas(); const mes = todayISO().slice(0,7);
   const est = S.pagos.map(p => pagoEstado(p));
@@ -1096,29 +1102,73 @@ $('#san-stair').onclick = e => { const b = e.target.closest('[data-step]'); if (
 $('#alertChip').onclick = () => showTab('san');
 $('#san-alerts').onclick = e => { const b = e.target.closest('[data-desc]'); if (!b) return; const a = alertas().find(x => x.key === b.dataset.desc); if (a) descartar(a); };
 
+/* ----- base de clientes ----- */
+async function loadClientes(force){
+  if (!force && S.cliAt && Date.now() - S.cliAt < CLI_REFRESH_MS) return;
+  try{
+    const d = await gvizRead(CLI_ID, CLI_GID, CLI_TQ);
+    const cli = {}, byName = {};
+    d.rows.forEach(r => {
+      const code = normCode(r[0]); if (!code) return;
+      const o = { code: String(r[0]).replace(/\.0+$/,''), rs: String(r[1]||'').trim(), fan: String(r[2]||'').trim(), dir: [r[3], r[4]].filter(x => String(x||'').trim()).join(' '),
+        ruta: String(r[5]||'').trim(), efe: norm(r[6])==='SI', imp: +r[7] || 0, dias: +r[8] || 0 };
+      cli[code] = o; (byName[normName(o.rs)] ||= []).push(o); if (o.fan) (byName[normName(o.fan)] ||= []).push(o);
+    });
+    S.cli = cli; S.cliByName = byName; S.cliAt = Date.now(); S.cliErr = '';
+  }catch(e){ console.error(e); S.cliErr = e.message; }
+}
+const cliBase = nro => S.cli[normCode(nro)] || null;
+function cliInfo(o){
+  if (!o) return '';
+  const extra = [o.fan && `“${esc(o.fan)}”`, o.dir && esc(o.dir), o.ruta && esc(o.ruta)].filter(Boolean).join(' · ');
+  const cob = [o.efe && '<b>Solo efectivo</b>', o.dias > 0 && `<b style="color:var(--det)">${o.dias} día${o.dias===1?'':'s'} con deuda vencida</b>`, o.imp > 0 && `deuda $${fmtN(o.imp,2)}`].filter(Boolean).join(' · ');
+  return `<div>📇 <b>${esc(o.rs)}</b>${extra ? ' · ' + extra : ''}</div>${cob ? `<div>${cob}</div>` : ''}`;
+}
+
 /* ----- formulario ----- */
 function prepForm(){
   if (!$('#pf-f').value) $('#pf-f').value = todayISO();
   if (!$('#pf-tipo').options.length) $('#pf-tipo').innerHTML = '<option value=""></option>' + TIPOS_PAGO.map(t=>`<option>${esc(t)}</option>`).join('');
   const seen = new Set(); const opts = [];
+  if (Object.keys(S.cli).length){
+    if ($('#pf-list').dataset.at !== String(S.cliAt)){
+      $('#pf-list').innerHTML = Object.values(S.cli).map(o => `<option value="${esc(o.rs)}">${esc(o.code)}${o.fan ? ' · ' + esc(o.fan) : ''}</option>`).join('');
+      $('#pf-list').dataset.at = String(S.cliAt);
+    }
+    pfHint(); return;
+  }
   S.sus.forEach(c => { if (!seen.has(c.key)){ seen.add(c.key); opts.push(`<option value="${esc(c.name)}">${esc(c.codes.join(' · '))}</option>`); } });
   S.rows.forEach(r => { const k = normName(r.cliente); if (r.cliente && !seen.has(k)){ seen.add(k); opts.push(`<option value="${esc(r.cliente)}">${esc(r.nro)}</option>`); } });
   $('#pf-list').innerHTML = opts.join('');
   pfHint();
 }
 function pfHint(){
-  const c = susCliente($('#pf-nc').value, $('#pf-cli').value);
-  $('#pf-hint').innerHTML = !($('#pf-nc').value || $('#pf-cli').value) ? '' : c
+  const nc = $('#pf-nc').value.trim(), nm = $('#pf-cli').value.trim();
+  const c = susCliente(nc, nm); const o = cliBase(nc);
+  let pre = '';
+  if (nc && Object.keys(S.cli).length && !o) pre = `<div style="color:#a14f00">⚠ El código ${esc(nc)} no está en la base de clientes. Revisalo.</div>`;
+  else if (o) pre = cliInfo(o);
+  else if (!nc && nm){ const l = S.cliByName[normName(nm)] || []; if (l.length > 1) pre = `<div style="color:#a14f00">Hay ${l.length} clientes con ese nombre (códigos ${l.map(x=>esc(x.code)).join(', ')}). Poné el código.</div>`; }
+  $('#pf-hint').innerHTML = !(nc || nm) ? '' : pre + (c
     ? `Tiene <b>${c.count}</b> suspensi${c.count===1?'ón':'ones'} registrada${c.count===1?'':'s'}${c.estado==='sus'?` y <b style="color:var(--det)">está suspendido hasta ${c.last.fin?fmtDate(c.last.fin):'sin fecha'}</b>`:''}. Si se suspende, le corresponde: ${sanPill(c)}`
-    : `Sin suspensiones registradas. Si se suspende, le corresponde: ${sanPill(null)}`;
+    : `Sin suspensiones registradas. Si se suspende, le corresponde: ${sanPill(null)}`);
 }
+let pfAuto = '';   // último nombre completado automáticamente
 $('#pf-nc').addEventListener('input', () => {
-  const c = S.susByCode[normCode($('#pf-nc').value)]; const r = S.rows.find(x => normCode(x.nro) && normCode(x.nro) === normCode($('#pf-nc').value));
-  if (!$('#pf-cli').value && (c || r)) $('#pf-cli').value = c ? c.name : r.cliente;
+  const k = normCode($('#pf-nc').value); const o = cliBase(k);
+  const c = S.susByCode[k]; const r = S.rows.find(x => normCode(x.nro) && normCode(x.nro) === k);
+  const name = o ? o.rs : c ? c.name : r ? r.cliente : '';
+  if (name && (!$('#pf-cli').value || $('#pf-cli').value === pfAuto)){ $('#pf-cli').value = name; pfAuto = name; }
+  else if (!name && $('#pf-cli').value === pfAuto){ $('#pf-cli').value = ''; pfAuto = ''; }
   pfHint();
 });
 $('#pf-cli').addEventListener('input', () => {
-  const c = S.susByName[normName($('#pf-cli').value)]; if (c && !$('#pf-nc').value && c.codes[0]) $('#pf-nc').value = c.codes[0];
+  pfAuto = '';
+  const l = S.cliByName[normName($('#pf-cli').value)] || [];
+  if (!$('#pf-nc').value){
+    if (l.length === 1) $('#pf-nc').value = l[0].code;
+    else { const c = S.susByName[normName($('#pf-cli').value)]; if (!l.length && c && c.codes[0]) $('#pf-nc').value = c.codes[0]; }
+  }
   pfHint();
 });
 $('#pagoForm').addEventListener('submit', async e => {
@@ -1220,7 +1270,7 @@ const editing = () => { const a = document.activeElement; return !!($('#acta') |
 async function load(manual){
   if (S.loading) return; S.loading = true; if (manual) $('#btnRefresh').textContent = '⟳ Leyendo…';
   try{
-    const [d, sx] = await Promise.all([DB.load(), gvizRead(SUS_ID, SUS_GID).then(v => ({ v }), e => ({ e }))]);
+    const [d, sx] = await Promise.all([DB.load(), gvizRead(SUS_ID, SUS_GID).then(v => ({ v }), e => ({ e })), loadClientes(manual)]);
     S.head = d.head || []; S.raw = d.rows || []; S.seg = d.seg || {}; if (d.cfg) S.cfg = { ...DEFAULT_CFG, ...d.cfg };
     S.pagosMissing = DB.mode==='api' && !Array.isArray(d.pagos); S.pagos = Array.isArray(d.pagos) ? d.pagos : (DB.mode==='api' ? [] : S.pagos);
     if (sx.v){ buildSus(sx.v.head, sx.v.rows); S.susErr = ''; S.susAt = Date.now(); } else { console.error(sx.e); S.susErr = sx.e.message; }
