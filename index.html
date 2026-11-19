@@ -114,6 +114,31 @@ table.kv td{font-size:12.5px}
 table.kv td:nth-child(odd){color:var(--mute);font-weight:600;width:110px;white-space:nowrap}
 table.firmas{margin-top:26px}table.firmas td{width:50%;border:1px solid var(--line);height:70px;vertical-align:bottom;font-size:11px;color:var(--mute)}
 .firmas{display:none}
+.navbadge{display:inline-block;min-width:18px;padding:0 5px;margin-left:5px;border-radius:9px;background:var(--det);color:#fff;font-size:11px;line-height:18px;text-align:center}
+.navbadge:empty{display:none}
+#alertChip{background:#5c1d1d;border-color:#8a2b2b;color:#fff;font-weight:600}
+.alertcard{border-left:5px solid var(--det)}
+.al{display:grid;grid-template-columns:minmax(180px,1.3fr) minmax(240px,2.4fr) minmax(170px,1fr) auto;gap:14px;align-items:start;padding:12px 2px;border-top:1px solid var(--line)}
+@media (max-width:900px){.al{grid-template-columns:1fr}}
+.stair4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:end;height:150px;margin-top:10px;border-bottom:8px solid #1a1d22}
+.stair4.big{height:210px}
+.stair4 .stp{min-height:78px}
+.stair4.big .stp{min-height:96px}
+.stp{border:0;border-radius:6px 6px 0 0;color:#fff;padding:8px 10px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;font:inherit}
+.stp b{font-size:24px;font-weight:800;line-height:1}
+.stp .sd{font-weight:800;font-size:20px;line-height:1}
+.stair4.big .stp .sd{font-size:30px}
+.stp:hover{filter:brightness(1.07)}
+.stp.on{box-shadow:inset 0 0 0 3px #1a1d22,inset 0 0 0 5px #fff}
+.e1{height:38%;background:#f7c08a;color:#4a2a07}.e2{height:58%;background:#f07f1d}.e3{height:78%;background:#c2410c}
+.e4{height:100%;background:repeating-linear-gradient(135deg,#1a1d22 0 14px,#2a2e35 14px 28px);border-top:4px solid var(--acc)}
+.pill{display:inline-block;padding:2px 8px;border-radius:5px;font-weight:700;font-size:11.5px;white-space:nowrap}
+.pe1{background:#fde8d2;color:#7a3e05}.pe2{background:#fcd9b8;color:#8a3c00}.pe3{background:#f6cdb8;color:#7c2207}.pe4{background:#1a1d22;color:#fff}
+.trk{display:inline-grid;grid-template-columns:repeat(4,8px);gap:2px;align-items:end;height:16px;vertical-align:-2px;margin-right:6px}
+.trk i{display:block;background:#e3e6eb;border-radius:2px 2px 0 0}
+.trk i:nth-child(1){height:38%}.trk i:nth-child(2){height:58%}.trk i:nth-child(3){height:78%}.trk i:nth-child(4){height:100%}
+.trk i.on:nth-child(1){background:#f7c08a}.trk i.on:nth-child(2){background:#f07f1d}.trk i.on:nth-child(3){background:#c2410c}.trk i.on:nth-child(4){background:#1a1d22}
+ol.tl{list-style:none;padding:4px 0 0;margin:0}
 @media print{
   body>*:not(#modalHost){display:none!important}
   .overlay{position:static;background:none;display:block}
@@ -130,6 +155,7 @@ table.firmas{margin-top:26px}table.firmas td{width:50%;border:1px solid var(--li
   <div class="ttl"><b>LOGÍSTICA TOTAL SRL</b><span>Conflictos en Punto de Entrega · POE-DIS-014</span></div>
   <div class="hright">
     <span class="chip" id="baseInfo"></span>
+    <span class="chip click" id="alertChip" style="display:none" title="Ver clientes que necesitan revisión"></span>
     <span class="chip click" id="btnRefresh" title="Volver a leer las respuestas y el seguimiento">⟳ Actualizar</span>
     <span class="chip" id="conn"><span class="dot" style="background:#999"></span>conectando…</span>
     <span class="chip click" id="userChip" title="Cambiar usuario">👤 —</span>
@@ -138,6 +164,7 @@ table.firmas{margin-top:26px}table.firmas td{width:50%;border:1px solid var(--li
 <nav id="nav">
   <button data-t="info">INFO</button>
   <div class="grp"><span>CONFLICTOS</span><button data-t="rev">Revisión</button><button data-t="res">Resumen</button></div>
+  <div class="grp"><span>SANCIONES</span><button data-t="san">Revisión de pagos<b class="navbadge" id="navAlert"></b></button><button data-t="sus">Clientes suspendidos</button></div>
   <button data-t="adm">ANALISTA 🔒</button>
 </nav>
 <div id="banner" style="display:none;background:#fde2e2;color:#8a1c1c;padding:10px 20px;font-weight:600"></div>
@@ -197,6 +224,15 @@ table.firmas{margin-top:26px}table.firmas td{width:50%;border:1px solid var(--li
       <p class="muted" id="infoMeta"></p>
     </div>
   </div>
+  <div class="card">
+    <div class="sect">Sanciones</div>
+    <h2>Problemas de pago y clientes suspendidos</h2>
+    <ul class="info">
+      <li><b>Revisión de pagos:</b> se registra a mano cada problema de pago de un cliente (sin dinero, pago incompleto, cheque rechazado, etc.). Cada carga genera la alerta <span class="badge" style="background:#fbe1e1;color:#9b1c1c">NECESITA REVISIÓN</span> y muestra qué sanción le corresponde según su historial.</li>
+      <li><b>La alerta se borra sola</b> cuando el cliente aparece en la planilla de clientes suspendidos con una suspensión que empieza el mismo día del problema o después. Si se decide no suspender (por ejemplo, pagó), se puede descartar indicando el motivo.</li>
+      <li><b>Clientes suspendidos:</b> historial de suspensiones por cliente, leído en vivo de la planilla de seguimiento de suspensiones. Escala: 1.ª 7 días · 2.ª 14 días · 3.ª 20 días · 4.ª bloqueo indefinido y reevaluación con Gerente, Jefe de ventas, Jefa de administración y Jefe de operaciones. Se cuentan solo las suspensiones registradas.</li>
+    </ul>
+  </div>
 </section>
 
 <!-- ================= REVISIÓN ================= -->
@@ -234,6 +270,76 @@ table.firmas{margin-top:26px}table.firmas td{width:50%;border:1px solid var(--li
   </div>
 </section>
 
+<!-- ================= SANCIONES · REVISIÓN DE PAGOS ================= -->
+<section class="tab" id="t-san">
+  <div id="san-warn"></div>
+  <div class="kpis" id="san-kpis"></div>
+  <div class="card alertcard">
+    <h2>⚠ Clientes que necesitan revisión</h2>
+    <p class="muted" style="margin-top:-4px">Clientes con problemas de pago cargados y sin suspensión posterior. La alerta se borra sola cuando el cliente aparece suspendido en la planilla de suspensiones con fecha igual o posterior al problema.</p>
+    <div id="san-alerts"></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h2>Registrar problema de pago</h2>
+      <form id="pagoForm" autocomplete="off">
+        <div class="agrid">
+          <label class="f">Fecha<input type="date" id="pf-f" required></label>
+          <label class="f">Nro de cliente<input id="pf-nc" inputmode="numeric" placeholder="Ej. 415415" required></label>
+        </div>
+        <label class="f" style="margin-top:8px">Nombre del cliente<input id="pf-cli" list="pf-list" placeholder="Razón social" required></label>
+        <datalist id="pf-list"></datalist>
+        <div id="pf-hint" class="muted" style="font-size:12px;margin-top:4px;min-height:16px"></div>
+        <div class="agrid" style="margin-top:4px">
+          <label class="f">Tipo de problema<select id="pf-tipo" required></select></label>
+          <label class="f">Monto (opcional)<input id="pf-monto" type="number" min="0" step="0.01" placeholder="$"></label>
+          <label class="f">Planilla / pedido<input id="pf-pla" placeholder="Opcional"></label>
+        </div>
+        <label class="f" style="margin-top:8px">Detalle<textarea id="pf-det" rows="3" placeholder="Qué pasó en la entrega o en la cobranza"></textarea></label>
+        <div class="row" style="margin-top:10px"><button class="btn acc" type="submit" id="pf-go">Registrar y generar alerta</button><span class="muted" style="font-size:12px">Queda guardado en la planilla de seguimiento, pestaña Pagos.</span></div>
+      </form>
+    </div>
+    <div class="card">
+      <h2>Escala de sanciones</h2>
+      <p class="muted" style="margin-top:-4px">Cuántos clientes hay en cada escalón según las suspensiones registradas. Tocá un escalón para ver quiénes son.</p>
+      <div class="stair4" id="san-stair"></div>
+      <ul class="muted" style="line-height:1.55;font-size:12.5px;margin:12px 0 0;padding-left:18px">
+        <li>1.ª suspensión: <b>7 días</b> · 2.ª: <b>14 días</b> · 3.ª: <b>20 días</b> · 4.ª: <b>bloqueo indefinido</b> y reevaluación con Gerente, Jefe de ventas, Jefa de administración y Jefe de operaciones.</li>
+        <li>Se cuentan solo las suspensiones registradas en la planilla.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Registro de problemas de pago</h2>
+    <div class="filters" style="margin-bottom:10px">
+      <label class="f">Estado<select id="pr-est"><option value="">Todos</option><option value="open">⚠ Necesita revisión</option><option value="susp">✅ Suspendido</option><option value="desc">Descartado</option></select></label>
+      <label class="f">Buscar<input type="search" id="pr-q" placeholder="cliente, código, texto…"></label>
+      <button class="btn acc" style="margin-left:auto" onclick="exportPagos()">⬇ Excel</button>
+    </div>
+    <div class="tblwrap free"><table id="pr-tbl"></table></div>
+  </div>
+</section>
+
+<!-- ================= SANCIONES · CLIENTES SUSPENDIDOS ================= -->
+<section class="tab" id="t-sus">
+  <div id="sus-warn"></div>
+  <div class="kpis" id="sus-kpis"></div>
+  <div class="card">
+    <h2>Cada reincidencia sube un escalón</h2>
+    <p class="muted" style="margin-top:-4px">La sanción se define por la cantidad de suspensiones que el cliente ya tiene registradas. Tocá un escalón para filtrar.</p>
+    <div class="stair4 big" id="sus-stair"></div>
+  </div>
+  <div class="card" style="padding:12px 14px"><div class="filters">
+    <label class="f">Buscar<input type="search" id="sf-q" placeholder="nombre o código"></label>
+    <label class="f">Estado<select id="sf-est"><option value="">Todos</option><option value="sus">Suspendidos hoy</option><option value="ok">Habilitados</option><option value="rein">Reincidentes</option><option value="alert">Con alerta de pago</option><option value="rev">Datos para revisar</option></select></label>
+    <label class="f">Escalón<select id="sf-step"><option value="">Todos</option><option value="1">1.ª suspensión</option><option value="2">2.ª suspensión</option><option value="3">3.ª suspensión</option><option value="4">4.ª o más (bloqueo)</option></select></label>
+    <button class="btn sec" id="sf-clear">Limpiar</button>
+    <button class="btn acc" style="margin-left:auto" onclick="exportSus()">⬇ Excel</button>
+  </div></div>
+  <div class="tblwrap"><table id="sus-tbl"></table></div>
+  <p class="muted" id="sus-src"></p>
+</section>
+
 <!-- ================= ANALISTA ================= -->
 <section class="tab" id="t-adm">
   <div id="admLock" class="card" style="max-width:380px">
@@ -255,6 +361,7 @@ table.firmas{margin-top:26px}table.firmas td{width:50%;border:1px solid var(--li
           <li><b>Implementar → Nueva implementación → Aplicación web</b>. Ejecutar como: <i>Yo</i>. Acceso: <i>Cualquier persona</i>.</li>
           <li>Copiar la URL que termina en <code>/exec</code> y pegarla en <code>index.html</code> en <code>APPS_SCRIPT_URL</code>.</li>
         </ol>
+        <p class="muted" style="font-size:12.5px">Al actualizar el <code>Codigo.gs</code>: <b>Implementar → Gestionar implementaciones → ✏️ editar → Versión: Nueva versión → Implementar</b>. Así la URL no cambia.</p>
       </div>
       <div class="card">
         <h2>2 · Configuración general</h2>
@@ -359,10 +466,10 @@ function jsonp(url, cbParam){
     document.head.appendChild(s);
   });
 }
-function gvizRead(){
-  const base = `https://docs.google.com/spreadsheets/d/${RESP_ID}/gviz/tq?gid=${RESP_GID}&headers=1&_=${Date.now()}`;
+function gvizRead(id = RESP_ID, gid = RESP_GID){
+  const base = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?gid=${gid}&headers=1&_=${Date.now()}`;
   return jsonp(base, (u, cb) => `${u}&tqx=out:json;responseHandler:${cb}`).then(d => {
-    if (!d || d.status==='error') throw new Error('La planilla de respuestas no se pudo leer (¿está compartida con “cualquier persona con el enlace”?)');
+    if (!d || d.status==='error') throw new Error('La planilla no se pudo leer (¿está compartida con “cualquier persona con el enlace”?)');
     const cols = d.table.cols.map(c => c.label || c.id);
     const rows = (d.table.rows||[]).map(r => cols.map((_, i) => {
       const c = (r.c||[])[i]; if (!c || c.v==null) return '';
@@ -380,17 +487,17 @@ const DB = {
         const d = await jsonp(APPS_SCRIPT_URL + '?action=all');
         if (!d || !d.ok) throw new Error(d && d.error || 'respuesta inválida');
         this.mode = 'api'; setConn('ok'); showBanner('');
-        return { head:d.head, rows:d.rows, seg:d.seg||{}, cfg:d.cfg };
+        return { head:d.head, rows:d.rows, seg:d.seg||{}, cfg:d.cfg, pagos:d.pagos };
       }catch(e){
         console.error(e); this.mode = 'off'; setConn('off');
         showBanner('⚠ No se pudo conectar con la planilla de seguimiento. Se muestran las respuestas pero no se puede guardar hasta que vuelva la conexión. ('+esc(e.message)+')');
-        const r = await gvizRead(); return { ...r, seg: S.seg || {}, cfg: S.cfg };
+        const r = await gvizRead(); return { ...r, seg: S.seg || {}, cfg: S.cfg, pagos: S.pagos };
       }
     }
     setConn('local');
     showBanner('⚠ MODO LOCAL: los comentarios se guardan solo en este navegador. Para guardarlos en la planilla de seguimiento hay que pegar la URL del Apps Script (ver ANALISTA).');
     const r = await gvizRead();
-    return { ...r, seg: ls.get('poe_seg', {}), cfg: ls.get('poe_cfg', null) };
+    return { ...r, seg: ls.get('poe_seg', {}), cfg: ls.get('poe_cfg', null), pagos: ls.get('poe_pagos', []) };
   },
   async save(id, fields, snap){
     if (this.mode==='off') throw new Error('Sin conexión con la planilla de seguimiento');
@@ -402,6 +509,27 @@ const DB = {
     const all = ls.get('poe_seg', {}); const cur = all[id] || { id, cu:S.user, ct:Date.now() };
     Object.assign(cur, snap, fields, { u:S.user, t:Date.now() }); all[id] = cur; ls.set('poe_seg', all);
     return cur;
+  },
+  async pago(p){
+    if (this.mode==='off') throw new Error('Sin conexión con la planilla de seguimiento');
+    if (this.mode==='api'){
+      const d = await jsonp(APPS_SCRIPT_URL + '?action=pago&data=' + encodeURIComponent(JSON.stringify({ p, user:S.user })));
+      if (!d || !d.ok) throw new Error(d && d.error || 'error al guardar');
+      return d.pago;
+    }
+    const all = ls.get('poe_pagos', []); const n = new Date(); const o = { ...p, id:'P'+Date.now(), u:S.user, t:`${todayISO()} ${pad(n.getHours())}:${pad(n.getMinutes())}`, est:'Abierta' };
+    all.push(o); ls.set('poe_pagos', all); return o;
+  },
+  async pagoDesc(ids, motivo){
+    if (this.mode==='off') throw new Error('Sin conexión con la planilla de seguimiento');
+    if (this.mode==='api'){
+      const d = await jsonp(APPS_SCRIPT_URL + '?action=pagoDesc&data=' + encodeURIComponent(JSON.stringify({ ids, motivo, user:S.user })));
+      if (!d || !d.ok) throw new Error(d && d.error || 'error al guardar');
+      return d;
+    }
+    const n = new Date(); const dt = `${todayISO()} ${pad(n.getHours())}:${pad(n.getMinutes())}`;
+    const all = ls.get('poe_pagos', []); all.forEach(p => { if (ids.includes(p.id)) Object.assign(p, { est:'Descartada', du:S.user, dm:motivo, dt }); }); ls.set('poe_pagos', all);
+    return { du:S.user, dt };
   },
   async saveCfg(cfg){
     if (this.mode==='off') throw new Error('Sin conexión');
@@ -592,7 +720,7 @@ function rowHtml(r){
     <td class="sem sem-${sm}" title="${sm}"></td>
     <td class="nowrap">${fmtDate(r.fecha)}<div class="who">${esc(r.hora)} hs · ${mesLbl(r.mes)}</div>${!isClosed(sg)?`<div class="who">${hb} día${hb===1?'':'s'} háb.</div>`:''}</td>
     <td style="min-width:190px"><b>${esc(r.cliente||'(sin nombre)')}</b><div class="who">${r.nro?'Cód. '+esc(r.nro):'Sin código'}</div>
-      ${est==='Bloqueado'?'<span class="badge b-anu">🚫 BLOQUEADO</span>':est==='Rehabilitado'?'<span class="badge" style="background:#dff3e8;color:#11663a">REHABILITADO</span>':''}${reincide?'<span class="badge b-venc">REINCIDE</span>':''}
+      ${sanBadges(r)}${est==='Bloqueado'?'<span class="badge b-anu">🚫 BLOQUEADO</span>':est==='Rehabilitado'?'<span class="badge" style="background:#dff3e8;color:#11663a">REHABILITADO</span>':''}${reincide?'<span class="badge b-venc">REINCIDE</span>':''}
       ${histHtml(r)}${prevHtml(r)}</td>
     <td style="min-width:130px">${esc(r.colab)}<div class="who">${r.planilla?'Planilla '+esc(r.planilla):''}</div></td>
     <td style="min-width:120px"><span class="drv"><b>${esc(r.motivo)}</b></span></td>
@@ -806,7 +934,8 @@ function renderAdm(){
   $('#comp').innerHTML = S.rows.length ? h : '<tr><td class="muted">Todavía no hay reportes.</td></tr>';
   $('#admSrc').innerHTML = `
     <div>📥 <b>Respuestas del formulario</b> (solo lectura): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${RESP_ID}/edit">abrir planilla</a></div>
-    <div>📝 <b>Seguimiento / comentarios</b> (archivo aparte): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${SEG_ID}/edit">abrir planilla</a> · pestañas Seguimiento, Historial y Config</div>
+    <div>⛔ <b>Clientes suspendidos</b> (solo lectura): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${SUS_ID}/edit#gid=${SUS_GID}">abrir planilla</a> ${S.susErr?'<span style="color:var(--det)">· no se pudo leer</span>':''}</div>
+    <div>📝 <b>Seguimiento / comentarios</b> (archivo aparte): <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${SEG_ID}/edit">abrir planilla</a> · pestañas Seguimiento, Pagos, Historial y Config</div>
     <div>🔌 Conexión: <b>${DB.mode==='api' ? '<span style="color:var(--prom)">Apps Script conectado</span>' : DB.mode==='off' ? '<span style="color:var(--det)">Apps Script configurado pero sin respuesta</span>' : '<span style="color:#a07800">MODO LOCAL — falta pegar APPS_SCRIPT_URL</span>'}</b></div>`;
   const ae = document.activeElement; const editing = ae && ae.closest && ae.closest('#t-adm') && ae.matches('input,textarea,select');
   if (!editing){ $('#cfgIni').value = S.cfg.inicio || ''; $('#cfgSla').value = S.cfg.sla || 2; $('#cfgForm').value = S.cfg.formLink || ''; }
@@ -849,19 +978,254 @@ function exportRes(){
 }
 $('#btnExport').onclick = () => exportRows(S.rows, 'POE-DIS-014_seguimiento');
 
+/* ===================== SANCIONES ===================== */
+const SUS_ID  = '1FBrsS_SAlZC3_GpuWe7L4KoFeaeATls4-BRujjoXSG0';
+const SUS_GID = 642664049;
+const ESCALA = [7, 14, 20, null];           // null = bloqueo indefinido
+const ORD = ['1.ª','2.ª','3.ª','4.ª'];
+const TIPOS_PAGO = ['Sin dinero al momento de la entrega','Pago incompleto','Hizo bajar el pedido y no pagó','Rechazo de mercadería sin dinero','Cheque rechazado / transferencia no acreditada','Deuda de vacíos en comodato','Otro'];
+const normCode = s => String(s ?? '').replace(/\.0+$/,'').replace(/\D/g,'').replace(/^0+/,'');
+function pDate(v){
+  const s = String(v ?? '').trim(); if (!s) return '';
+  let m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/); if (m){ let y = +m[3]; if (y < 100) y += 2000; return `${y}-${pad(m[2])}-${pad(m[1])}`; }
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? `${m[1]}-${m[2]}-${m[3]}` : '';
+}
+function splitCliente(raw){
+  const parts = String(raw).split(/\s*-\s*/); const codes = []; const rest = [];
+  parts.forEach(p => { const m = p.match(/^(\d+)\s*(.*)$/); if (m && !rest.length){ codes.push(normCode(m[1])); if (m[2]) rest.push(m[2]); } else rest.push(p); });
+  return { codes, name: rest.join(' - ').trim() || String(raw).trim() };
+}
+Object.assign(S, { sus:[], susEv:[], susByCode:{}, susByName:{}, susErr:'', susAt:null, pagos:[], pagosMissing:false });
+
+function buildSus(head, rows){
+  const H = head.map(norm); const ix = (re, d) => { const i = H.findIndex(h => re.test(h)); return i >= 0 ? i : d; };
+  const iC = ix(/CLIENTE/, 0), iI = ix(/INICIO/, 1), iF = ix(/FINALIZ|^FIN|FECHA DE FIN/, 2), iM = ix(/MOTIVO|COMENT/, 3);
+  const map = new Map(); const hoy = todayISO();
+  rows.forEach((r, idx) => {
+    const raw = String(r[iC] ?? '').trim(); if (!raw || /^NOTA/i.test(raw)) return;
+    const ini = pDate(r[iI]); if (!ini) return;
+    const fin = pDate(r[iF]); const { codes, name } = splitCliente(raw); const key = normName(name);
+    if (!map.has(key)) map.set(key, { key, name, codes:new Set(), ev:[] });
+    const c = map.get(key); codes.forEach(x => c.codes.add(x));
+    const same = c.ev.find(e => e.ini === ini);
+    if (same){ codes.forEach(x => same.codes.add(x)); same.dup++; return; }
+    c.ev.push({ ini, fin, mot: String(r[iM] ?? '').trim(), codes:new Set(codes), dup:1, fila: idx + 2 });
+  });
+  S.sus = [...map.values()].map(c => {
+    c.ev.sort((a,b) => a.ini.localeCompare(b.ini));
+    c.ev.forEach((e,i) => { e.n = i; e.esc = ESCALA[Math.min(i,3)]; e.dias = e.fin ? diasEntre(e.ini, e.fin) : null; e.bad = !!(e.fin && e.fin < e.ini);
+      e.dif = !e.bad && e.fin && e.esc !== null && e.dias !== e.esc; e.client = c; });
+    c.codes = [...c.codes].filter(Boolean); c.count = c.ev.length; c.last = c.ev.at(-1); c.step = Math.min(c.count, 4);
+    const l = c.last; c.estado = l.bad ? 'ok' : (!l.fin || hoy < l.fin) ? 'sus' : hoy === l.fin ? 'hoy' : 'ok';
+    c.flags = c.ev.filter(e => e.dif || e.bad || e.dup > 1).length;
+    return c;
+  }).sort((a,b) => ({sus:0,hoy:1,ok:2}[a.estado] - {sus:0,hoy:1,ok:2}[b.estado]) || b.count - a.count || b.last.ini.localeCompare(a.last.ini));
+  S.susEv = S.sus.flatMap(c => c.ev).sort((a,b) => b.ini.localeCompare(a.ini));
+  S.susByCode = {}; S.susByName = {};
+  S.sus.forEach(c => { c.codes.forEach(k => S.susByCode[k] = c); S.susByName[c.key] = c; });
+}
+const susCliente = (nro, nombre) => (normCode(nro) && S.susByCode[normCode(nro)]) || S.susByName[normName(nombre)] || null;
+function nextSancion(c){ const i = c ? c.count : 0; return i >= 3 ? { i:3, txt:'Bloqueo indefinido', short:'Bloqueo' } : { i, txt:`${ORD[i]} suspensión · ${ESCALA[i]} días`, short:`${ESCALA[i]} días` }; }
+const sanPill = c => { const n = nextSancion(c); return `<span class="pill pe${n.i+1}">${esc(n.txt)}</span>`; };
+const trk = n => `<span class="trk" aria-hidden="true">${[0,1,2,3].map(i=>`<i class="${i<n?'on':''}"></i>`).join('')}</span>`;
+
+/* ----- pagos y alertas ----- */
+const pagoKey = p => normCode(p.nc) ? 'c'+normCode(p.nc) : 'n'+normName(p.cli);
+function pagoEstado(p){
+  if (p.est === 'Descartada') return { k:'desc' };
+  const c = susCliente(p.nc, p.cli); const ev = c && c.ev.find(e => e.ini >= String(p.f).slice(0,10));
+  return ev ? { k:'susp', ev, c } : { k:'open', c };
+}
+function alertas(){
+  const g = {};
+  S.pagos.forEach(p => { const e = pagoEstado(p); if (e.k !== 'open') return; const k = pagoKey(p); (g[k] ||= { key:k, pagos:[], c:e.c }).pagos.push(p); });
+  return Object.values(g).map(a => { a.pagos.sort((x,y) => String(x.f).localeCompare(String(y.f))); a.p0 = a.pagos[0]; a.pl = a.pagos.at(-1); return a; })
+    .sort((a,b) => String(a.p0.f).localeCompare(String(b.p0.f)));
+}
+const alertKeys = () => new Set(alertas().map(a => a.key));
+function alertaDe(nro, nombre){ const k = normCode(nro) ? 'c'+normCode(nro) : 'n'+normName(nombre); return alertas().find(a => a.key === k || (!normCode(nro) && normName(a.p0.cli) === normName(nombre))); }
+
+function renderNavAlert(){
+  const n = alertas().length;
+  $('#navAlert').textContent = n || '';
+  const ch = $('#alertChip'); ch.style.display = n ? '' : 'none'; ch.innerHTML = `⚠ ${n} cliente${n===1?'':'s'} necesita${n===1?'':'n'} revisión`;
+}
+function susWarn(el){
+  el.innerHTML = S.susErr ? `<div class="warn" style="margin-bottom:12px">⚠ No se pudo leer la planilla de clientes suspendidos (${esc(S.susErr)}). Las alertas no se pueden cerrar solas hasta que se pueda leer. Revisá que siga compartida como “cualquier persona con el enlace”.</div>` : '';
+}
+function renderSan(){
+  susWarn($('#san-warn'));
+  if (S.pagosMissing) $('#san-warn').innerHTML += `<div class="warn" style="margin-bottom:12px">⚠ El Apps Script todavía no tiene la parte de pagos. Pegá el <b>Codigo.gs</b> nuevo y publicá una versión nueva (ver ANALISTA). Hasta entonces no se pueden registrar problemas de pago.</div>`;
+  const al = alertas(); const mes = todayISO().slice(0,7);
+  const est = S.pagos.map(p => pagoEstado(p));
+  const k = (v,l,col) => `<div class="kpi" style="${col?`border-left:5px solid ${col}`:''}"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  $('#san-kpis').innerHTML = k(`<span style="color:${al.length?'var(--det)':'inherit'}">${al.length}</span>`,'Clientes necesitan revisión','var(--det)') +
+    k(est.filter(e=>e.k==='open').length,'Problemas de pago abiertos') + k(S.pagos.filter(p=>String(p.f).slice(0,7)===mes).length,'Cargados este mes') +
+    k(est.filter(e=>e.k==='susp').length,'Resueltos con suspensión','var(--s-verde)') + k(S.sus.filter(c=>c.estado==='sus').length,'Clientes suspendidos hoy') + k(S.sus.filter(c=>c.count>=4).length,'Bloqueados (4.ª)','#222');
+  // alertas
+  $('#san-alerts').innerHTML = al.length ? al.map(a => {
+    const c = a.c; const dias = diasEntre(String(a.p0.f).slice(0,10), todayISO());
+    const hist = c ? `${trk(c.count)}${c.count} suspensi${c.count===1?'ón':'ones'} registrada${c.count===1?'':'s'} · última ${fmtDate(c.last.ini)}${c.estado==='sus'?` · <b style="color:var(--det)">suspendido hasta ${c.last.fin?fmtDate(c.last.fin):'sin fecha'}</b>`:''}` : `${trk(0)}Sin suspensiones registradas`;
+    return `<div class="al">
+      <div><b>${esc(a.pl.cli||'(sin nombre)')}</b><div class="who">${normCode(a.pl.nc)?'Cód. '+esc(a.pl.nc):'Sin código'}</div><span class="badge" style="background:#fbe1e1;color:#9b1c1c">NECESITA REVISIÓN</span></div>
+      <div style="font-size:12.5px">${a.pagos.map(p=>`<div>• <b>${fmtDate(p.f)}</b> ${esc(p.tipo||'')}${p.monto?` · $${fmtN(+p.monto,2)}`:''}${p.det?` <span class="muted">— ${esc(String(p.det).slice(0,110))}${String(p.det).length>110?'…':''}</span>`:''} <span class="who">(${esc(p.u||'')})</span></div>`).join('')}
+        <div class="who" style="margin-top:4px">${hist}</div></div>
+      <div><div class="who">Si se suspende, le corresponde</div>${sanPill(c)}<div class="who" style="margin-top:4px">Alerta abierta hace ${dias} día${dias===1?'':'s'}</div></div>
+      <div class="r"><button class="btn sec" data-desc="${esc(a.key)}" style="padding:5px 9px">Descartar</button></div>
+    </div>`; }).join('') : `<p class="okbox">✅ No hay clientes pendientes de revisión.</p>`;
+  // escalera
+  stairHtml($('#san-stair'), null);
+  // registro
+  renderPagosTbl();
+}
+function stairHtml(el, sel){
+  const cnt = [0,0,0,0]; S.sus.forEach(c => cnt[c.step-1]++);
+  el.innerHTML = [0,1,2,3].map(i => `<button type="button" class="stp e${i+1} ${sel===String(i+1)?'on':''}" data-step="${i+1}"><span class="who" style="color:inherit;opacity:.9">${ORD[i]} suspensión</span><span><b>${cnt[i]}</b> <span style="font-size:11px">cliente${cnt[i]===1?'':'s'}</span></span><span class="sd">${i<3?ESCALA[i]+' días':'Bloqueo'}</span></button>`).join('');
+}
+function renderPagosTbl(){
+  const fe = $('#pr-est').value, q = norm($('#pr-q').value);
+  const list = S.pagos.map(p => ({ p, e: pagoEstado(p) })).filter(({p,e}) => (!fe || e.k===fe) && (!q || norm([p.nc,p.cli,p.tipo,p.det,p.u,p.pla].join(' ')).includes(q)))
+    .sort((a,b) => String(b.p.f).localeCompare(String(a.p.f)) || String(b.p.t).localeCompare(String(a.p.t)));
+  const est = ({p,e}) => e.k==='open' ? '<span class="pill-bad">⚠ Necesita revisión</span>' : e.k==='susp' ? `<span class="pill-ok">✅ Suspendido ${fmtDate(e.ev.ini)}</span><div class="who">${ORD[Math.min(e.ev.n,3)]} suspensión${e.ev.fin?' · hasta '+fmtDate(e.ev.fin):''}</div>` : `<span class="pill-off">Descartado</span><div class="who">${esc(p.dm||'')}${p.du?' · '+esc(p.du):''}</div>`;
+  $('#pr-tbl').innerHTML = '<tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th class="r">Monto</th><th>Planilla</th><th>Detalle</th><th>Cargado por</th><th>Estado</th></tr>' +
+    (list.length ? list.map(x => `<tr><td class="nowrap">${fmtDate(x.p.f)}</td><td><b>${esc(x.p.cli)}</b><div class="who">${normCode(x.p.nc)?'Cód. '+esc(x.p.nc):''}</div></td><td>${esc(x.p.tipo||'')}</td><td class="r nowrap">${x.p.monto?'$'+fmtN(+x.p.monto,2):''}</td><td>${esc(x.p.pla||'')}</td><td class="cm">${esc(x.p.det||'')}</td><td class="who nowrap">${esc(x.p.u||'')}<br>${fmtTs(x.p.t)}</td><td>${est(x)}</td></tr>`).join('')
+    : `<tr><td colspan="8" class="muted" style="padding:20px;text-align:center">${S.pagos.length ? 'No hay registros con estos filtros.' : 'Todavía no se cargó ningún problema de pago.'}</td></tr>`);
+}
+$('#pr-est').onchange = renderPagosTbl; $('#pr-q').oninput = renderPagosTbl;
+$('#san-stair').onclick = e => { const b = e.target.closest('[data-step]'); if (!b) return; $('#sf-step').value = b.dataset.step; showTab('sus'); };
+$('#alertChip').onclick = () => showTab('san');
+$('#san-alerts').onclick = e => { const b = e.target.closest('[data-desc]'); if (!b) return; const a = alertas().find(x => x.key === b.dataset.desc); if (a) descartar(a); };
+
+/* ----- formulario ----- */
+function prepForm(){
+  if (!$('#pf-f').value) $('#pf-f').value = todayISO();
+  if (!$('#pf-tipo').options.length) $('#pf-tipo').innerHTML = '<option value=""></option>' + TIPOS_PAGO.map(t=>`<option>${esc(t)}</option>`).join('');
+  const seen = new Set(); const opts = [];
+  S.sus.forEach(c => { if (!seen.has(c.key)){ seen.add(c.key); opts.push(`<option value="${esc(c.name)}">${esc(c.codes.join(' · '))}</option>`); } });
+  S.rows.forEach(r => { const k = normName(r.cliente); if (r.cliente && !seen.has(k)){ seen.add(k); opts.push(`<option value="${esc(r.cliente)}">${esc(r.nro)}</option>`); } });
+  $('#pf-list').innerHTML = opts.join('');
+  pfHint();
+}
+function pfHint(){
+  const c = susCliente($('#pf-nc').value, $('#pf-cli').value);
+  $('#pf-hint').innerHTML = !($('#pf-nc').value || $('#pf-cli').value) ? '' : c
+    ? `Tiene <b>${c.count}</b> suspensi${c.count===1?'ón':'ones'} registrada${c.count===1?'':'s'}${c.estado==='sus'?` y <b style="color:var(--det)">está suspendido hasta ${c.last.fin?fmtDate(c.last.fin):'sin fecha'}</b>`:''}. Si se suspende, le corresponde: ${sanPill(c)}`
+    : `Sin suspensiones registradas. Si se suspende, le corresponde: ${sanPill(null)}`;
+}
+$('#pf-nc').addEventListener('input', () => {
+  const c = S.susByCode[normCode($('#pf-nc').value)]; const r = S.rows.find(x => normCode(x.nro) && normCode(x.nro) === normCode($('#pf-nc').value));
+  if (!$('#pf-cli').value && (c || r)) $('#pf-cli').value = c ? c.name : r.cliente;
+  pfHint();
+});
+$('#pf-cli').addEventListener('input', () => {
+  const c = S.susByName[normName($('#pf-cli').value)]; if (c && !$('#pf-nc').value && c.codes[0]) $('#pf-nc').value = c.codes[0];
+  pfHint();
+});
+$('#pagoForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!S.user){ askUser(() => $('#pf-go').click()); return; }
+  if (S.pagosMissing && DB.mode==='api'){ toast('⚠ Falta actualizar el Apps Script'); return; }
+  const p = { f: $('#pf-f').value || todayISO(), nc: $('#pf-nc').value.trim(), cli: $('#pf-cli').value.trim(), tipo: $('#pf-tipo').value, monto: $('#pf-monto').value, pla: $('#pf-pla').value.trim(), det: $('#pf-det').value.trim() };
+  if (!p.cli || !p.tipo){ toast('Completá cliente y tipo de problema'); return; }
+  $('#pf-go').disabled = true;
+  try{
+    const res = await DB.pago(p); S.pagos.push(res);
+    ['pf-nc','pf-cli','pf-monto','pf-pla','pf-det'].forEach(id => $('#'+id).value = ''); $('#pf-tipo').value = ''; $('#pf-f').value = todayISO(); pfHint();
+    const st = pagoEstado(res);
+    toast(st.k==='open' ? '⚠ Registrado · alerta “necesita revisión” generada' : 'Registrado ✓');
+    renderSan(); renderNavAlert();
+  }catch(err){ console.error(err); toast('⚠ No se guardó: ' + err.message); }
+  finally{ $('#pf-go').disabled = false; }
+});
+function descartar(a){
+  if (!S.user){ askUser(() => descartar(a)); return; }
+  $('#modalHost').insertAdjacentHTML('beforeend', `<div class="overlay" id="descOv"><div class="modal"><h2>Descartar alerta</h2>
+    <p class="muted" style="margin-top:-6px"><b>${esc(a.pl.cli)}</b> · ${a.pagos.length} problema${a.pagos.length===1?'':'s'} de pago. Usalo solo si se decidió no suspender (por ejemplo, el cliente pagó).</p>
+    <label class="f">Motivo<textarea id="descMot" rows="3" style="width:100%" placeholder="Obligatorio"></textarea></label>
+    <div class="row" style="margin-top:10px;justify-content:flex-end"><button class="btn sec" id="descNo">Cancelar</button><button class="btn" id="descOk">Descartar alerta</button></div></div></div>`);
+  $('#descNo').onclick = () => $('#descOv').remove(); $('#descMot').focus();
+  $('#descOk').onclick = async () => {
+    const m = $('#descMot').value.trim(); if (!m){ $('#descMot').focus(); return; }
+    $('#descOk').disabled = true;
+    try{ const r = await DB.pagoDesc(a.pagos.map(p=>p.id), m); a.pagos.forEach(p => Object.assign(p, { est:'Descartada', du:r.du, dm:m, dt:r.dt })); $('#descOv').remove(); toast('Alerta descartada'); renderSan(); renderNavAlert(); }
+    catch(err){ toast('⚠ ' + err.message); $('#descOk').disabled = false; }
+  };
+}
+
+/* ----- clientes suspendidos ----- */
+const SUS_OPEN = new Set();
+function renderSus(){
+  susWarn($('#sus-warn'));
+  const hoy = todayISO(); const en7 = new Date(Date.now()+7*864e5); const en7s = `${en7.getFullYear()}-${pad(en7.getMonth()+1)}-${pad(en7.getDate())}`;
+  const sus = S.sus.filter(c=>c.estado==='sus'); const ak = alertKeys();
+  const hasAlert = c => c.codes.some(x => ak.has('c'+x)) || ak.has('n'+c.key);
+  const k = (v,l,col) => `<div class="kpi" style="${col?`border-left:5px solid ${col}`:''}"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  $('#sus-kpis').innerHTML = k(`<span style="color:var(--det)">${sus.length}</span>`,'Suspendidos hoy','var(--det)') + k(S.sus.filter(c=>c.estado==='hoy').length,'Se habilitan hoy','var(--s-amarillo)') +
+    k(sus.filter(c=>c.last.fin && c.last.fin<=en7s).length,'Vuelven en 7 días') + k(S.sus.filter(c=>c.count>1).length,'Reincidentes','#7b4fd6') + k(S.sus.filter(c=>c.count>=4).length,'Bloqueados','#222') +
+    k(S.sus.length,'Clientes con suspensiones') + k(S.susEv.length,'Suspensiones registradas');
+  const step = $('#sf-step').value, fe = $('#sf-est').value, q = norm($('#sf-q').value);
+  stairHtml($('#sus-stair'), step);
+  const list = S.sus.filter(c => (!step || String(c.step)===step) && (!q || norm(c.name+' '+c.codes.join(' ')).includes(q)) &&
+    (!fe || (fe==='sus' ? (c.estado==='sus'||c.estado==='hoy') : fe==='ok' ? c.estado==='ok' : fe==='rein' ? c.count>1 : fe==='alert' ? hasAlert(c) : c.flags>0)));
+  const estado = c => { const l = c.last;
+    if (c.estado==='sus') return `<span class="pill-bad">Suspendido</span><div class="who">${l.fin?`vuelve el ${fmtDate(l.fin)} · faltan ${diasEntre(hoy,l.fin)} d`:'sin fecha de fin'}</div>`;
+    if (c.estado==='hoy') return `<span class="pill-mid">Se habilita hoy</span>`;
+    return `<span class="pill-ok">Habilitado</span><div class="who">${l.bad?'fechas a revisar':'desde el '+fmtDate(l.fin)}</div>`; };
+  $('#sus-tbl').innerHTML = '<thead><tr><th>Cliente</th><th>Suspensiones</th><th>Estado</th><th>Si reincide</th><th>Último motivo</th><th></th></tr></thead><tbody>' +
+    (list.length ? list.map(c => { const op = SUS_OPEN.has(c.key);
+      return `<tr class="susrow" data-k="${esc(c.key)}" style="cursor:pointer"><td style="min-width:200px"><b>${esc(c.name)}</b><div class="who">${c.codes.length?'Cód. '+esc(c.codes.join(' · ')):'Sin código'}</div>${hasAlert(c)?'<span class="badge" style="background:#fbe1e1;color:#9b1c1c">⚠ REVISIÓN DE PAGO</span>':''}${c.flags?'<span class="badge b-venc">DATOS A REVISAR</span>':''}</td>
+        <td class="nowrap">${trk(c.count)}<b>${c.count}</b> <span class="who">· última ${fmtDate(c.last.ini)}</span></td><td>${estado(c)}</td><td>${sanPill(c)}</td><td class="cm">${esc(c.last.mot)}</td><td class="muted">${op?'▾':'▸'}</td></tr>` +
+        (op ? `<tr><td colspan="6" style="background:#fafbfc"><ol class="tl">${c.ev.map(e => { const kk = Math.min(e.n,3)+1;
+          let d = e.bad ? '<span style="color:#a14f00;font-weight:600">fechas a revisar</span>' : e.dias===null ? 'en curso' : `${e.dias} días aplicados`;
+          if (e.dif) d += ` · <span style="color:#a14f00;font-weight:600">la escala indica ${e.esc} días</span>`;
+          if (e.dup > 1) d += ` · ${e.dup} filas con el mismo inicio, contadas como una`;
+          return `<li><span class="pill pe${kk}">${ORD[kk-1]}</span> <b>${fmtDate(e.ini)} al ${e.fin?fmtDate(e.fin):'—'}</b> <span class="who">· ${d}</span><div style="margin:2px 0 8px 46px;font-size:12.5px">${esc(e.mot||'Sin motivo cargado')}</div></li>`; }).join('')}</ol></td></tr>` : ''); }).join('')
+     : `<tr><td colspan="6" class="muted" style="padding:24px;text-align:center">${S.sus.length ? 'Ningún cliente coincide con los filtros.' : (S.susErr ? 'No se pudo leer la planilla de suspensiones.' : 'Leyendo la planilla de suspensiones…')}</td></tr>`) + '</tbody>';
+  $('#sus-src').innerHTML = `Fuente: <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/${SUS_ID}/edit#gid=${SUS_GID}">Seguimiento_Clientes_Suspendidos</a>${S.susAt?` · leída ${fmtTs(S.susAt)}`:''}. Las filas del mismo cliente con la misma fecha de inicio cuentan como una sola suspensión.`;
+}
+$('#sus-tbl').onclick = e => { const r = e.target.closest('.susrow'); if (!r) return; const k = r.dataset.k; SUS_OPEN.has(k) ? SUS_OPEN.delete(k) : SUS_OPEN.add(k); renderSus(); };
+$('#sus-stair').onclick = e => { const b = e.target.closest('[data-step]'); if (!b) return; $('#sf-step').value = $('#sf-step').value===b.dataset.step ? '' : b.dataset.step; renderSus(); };
+['sf-est','sf-step'].forEach(id => $('#'+id).onchange = renderSus); $('#sf-q').oninput = renderSus;
+$('#sf-clear').onclick = () => { $('#sf-q').value=''; $('#sf-est').value=''; $('#sf-step').value=''; renderSus(); };
+
+/* ----- marca en Revisión de conflictos ----- */
+function sanBadges(r){
+  const c = susCliente(r.nro, r.cliente); let h = '';
+  if (c && c.estado==='sus') h += `<span class="badge" style="background:#fbe1e1;color:#9b1c1c" title="Planilla de suspensiones">SUSPENDIDO${c.last.fin?' HASTA '+fmtDM(c.last.fin):''}</span>`;
+  if (alertaDe(r.nro, r.cliente)) h += `<span class="badge" style="background:#fbe1e1;color:#9b1c1c">⚠ REVISIÓN DE PAGO</span>`;
+  return h;
+}
+
+/* ----- exportar ----- */
+function exportPagos(){
+  if (typeof XLSX==='undefined'){ toast('No cargó la librería de Excel'); return; }
+  const data = S.pagos.map(p => { const e = pagoEstado(p); return { Fecha:p.f, 'Nro cliente':p.nc, Cliente:p.cli, Tipo:p.tipo, Monto:p.monto?+p.monto:'', 'Planilla / pedido':p.pla||'', Detalle:p.det||'', 'Cargado por':p.u||'', 'Cargado el':p.t||'',
+    Estado: e.k==='open'?'Necesita revisión':e.k==='susp'?`Suspendido ${e.ev.ini}`:'Descartado', 'Motivo descarte':p.dm||'', 'Le corresponde': nextSancion(susCliente(p.nc,p.cli)).txt }; });
+  const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data.length?data:[{'Sin datos':''}]), 'Problemas de pago'); XLSX.writeFile(wb, `Sanciones_pagos_${todayISO()}.xlsx`);
+}
+function exportSus(){
+  if (typeof XLSX==='undefined'){ toast('No cargó la librería de Excel'); return; }
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(S.sus.map(c => ({ Cliente:c.name, 'Códigos':c.codes.join(', '), Suspensiones:c.count, Estado:{sus:'Suspendido',hoy:'Se habilita hoy',ok:'Habilitado'}[c.estado], 'Última inicio':c.last.ini, 'Última fin':c.last.fin, 'Si reincide':nextSancion(c).txt, 'Último motivo':c.last.mot }))), 'Clientes');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(S.susEv.map(e => ({ Inicio:e.ini, Fin:e.fin, Cliente:e.client.name, 'Códigos':[...e.codes].join(', '), 'N.º':ORD[Math.min(e.n,3)], 'Días aplicados':e.dias??'', 'Según escala':e.esc??'Bloqueo', Motivo:e.mot }))), 'Registro');
+  XLSX.writeFile(wb, `Clientes_suspendidos_${todayISO()}.xlsx`);
+}
+
 /* ===================== navegación / carga ===================== */
 function showTab(t){ $$('.tab').forEach(s => s.classList.toggle('on', s.id==='t-'+t)); $$('nav button').forEach(b => b.classList.toggle('on', b.dataset.t===t)); ls.set('poe_tab', t); renderTab(t); }
-function renderTab(t){ if (t==='info') renderInfo(); else if (t==='rev'){ refreshFilters(); renderRev(); } else if (t==='res') renderRes(); else if (t==='adm') renderAdm(); }
-function renderAll(){ renderTab(ls.get('poe_tab','rev')); $('#baseInfo').textContent = S.loadedAt ? `${S.rows.length} reportes · leído ${fmtTs(S.loadedAt)}` : 'leyendo…'; }
+function renderTab(t){ if (t==='info') renderInfo(); else if (t==='rev'){ refreshFilters(); renderRev(); } else if (t==='res') renderRes(); else if (t==='san'){ prepForm(); renderSan(); } else if (t==='sus') renderSus(); else if (t==='adm') renderAdm(); }
+function renderAll(){ renderTab(ls.get('poe_tab','rev')); renderNavAlert(); $('#baseInfo').textContent = S.loadedAt ? `${S.rows.length} reporte${S.rows.length===1?'':'s'} · leído ${fmtTs(S.loadedAt)}` : 'leyendo…'; }
 $('#nav').onclick = e => { const b = e.target.closest('button[data-t]'); if (b) showTab(b.dataset.t); };
-const editing = () => { const a = document.activeElement; return !!($('#acta') || $('#userOv') || (a && a.closest && a.closest('#rev-tbl') && a.matches('textarea,input,select'))); };
+const editing = () => { const a = document.activeElement; return !!($('#acta') || $('#userOv') || $('#descOv') || (a && a.closest && (a.closest('#rev-tbl') || a.closest('#pagoForm')) && a.matches('textarea,input,select'))); };
 async function load(manual){
   if (S.loading) return; S.loading = true; if (manual) $('#btnRefresh').textContent = '⟳ Leyendo…';
   try{
-    const d = await DB.load();
+    const [d, sx] = await Promise.all([DB.load(), gvizRead(SUS_ID, SUS_GID).then(v => ({ v }), e => ({ e }))]);
     S.head = d.head || []; S.raw = d.rows || []; S.seg = d.seg || {}; if (d.cfg) S.cfg = { ...DEFAULT_CFG, ...d.cfg };
+    S.pagosMissing = DB.mode==='api' && !Array.isArray(d.pagos); S.pagos = Array.isArray(d.pagos) ? d.pagos : (DB.mode==='api' ? [] : S.pagos);
+    if (sx.v){ buildSus(sx.v.head, sx.v.rows); S.susErr = ''; S.susAt = Date.now(); } else { console.error(sx.e); S.susErr = sx.e.message; }
     S.loadedAt = Date.now(); buildRows();
-    if (manual || !editing()) renderAll(); else $('#baseInfo').textContent = `${S.rows.length} reportes · leído ${fmtTs(S.loadedAt)}`;
+    if (manual || !editing()) renderAll(); else $('#baseInfo').textContent = `${S.rows.length} reporte${S.rows.length===1?'':'s'} · leído ${fmtTs(S.loadedAt)}`;
     if (manual) toast('Actualizado ✓');
   }catch(e){ console.error(e); showBanner('⚠ ' + esc(e.message)); }
   finally{ S.loading = false; $('#btnRefresh').textContent = '⟳ Actualizar'; }
